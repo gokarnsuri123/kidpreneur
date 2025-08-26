@@ -1,0 +1,1969 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kidpreneur - Young Innovators Showcase</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.fade-in { animation: fadeIn 0.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+.idea-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(350px,1fr)); gap: 2rem; }
+.logo-placeholder { width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border-radius: 8px; }
+.dark { background-color: #1a202c; color: #e2e8f0; }
+.dark .bg-white { background-color: #2d3748 !important; }
+.dark .text-gray-800 { color: #e2e8f0 !important; }
+.dark .text-gray-600 { color: #a0aec0 !important; }
+.dark .text-gray-400 { color: #718096 !important; }
+.progress-bar { background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%); }
+.badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+.badge-gold { background: linear-gradient(45deg, #ffd700, #ffed4a); color: #744210; }
+.badge-silver { background: linear-gradient(45deg, #c0c0c0, #e5e7eb); color: #374151; }
+.badge-bronze { background: linear-gradient(45deg, #cd7f32, #d97706); color: #fff; }
+.timeline-item { position: relative; padding-left: 2rem; }
+.timeline-item::before { content: ''; position: absolute; left: 0; top: 0.5rem; width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; }
+.timeline-item:not(:last-child)::after { content: ''; position: absolute; left: 5px; top: 1.5rem; width: 2px; height: calc(100% - 1rem); background: #e5e7eb; }
+.quiz-option { transition: all 0.3s ease; }
+.quiz-option:hover { background: #f3f4f6; }
+.quiz-correct { background: #dcfce7 !important; border-color: #16a34a !important; }
+.quiz-incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; }
+.canvas-container { border: 2px dashed #d1d5db; min-height: 400px; display: flex; align-items: center; justify-content: center; }
+.draggable { cursor: move; }
+.drop-zone { min-height: 60px; border: 2px dashed #d1d5db; display: flex; align-items: center; justify-content: center; }
+.drop-zone.drag-over { background: #f0f9ff; border-color: #3b82f6; }
+</style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+
+<!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+    <div class="flex items-center">
+      <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-2"></i>
+      <span class="text-xl font-bold text-gray-800">Kidpreneur</span>
+    </div>
+    <div class="hidden md:flex items-center space-x-4">
+      <button onclick="showSection('home')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</button>
+      <button onclick="showSection('profile')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Profile</button>
+      <button onclick="showSection('submit')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Submit Idea</button>
+      <button onclick="showSection('ideas')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Showcase</button>
+      <button onclick="showSection('business-tools')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Tools</button>
+      <button onclick="showSection('learning')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Learning</button>
+      <button onclick="showSection('competitions')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Competitions</button>
+      <button onclick="showSection('analytics')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Analytics</button>
+      <button id="darkModeToggle" class="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300">Dark Mode</button>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Home Section -->
+  <section id="home" class="fade-in">
+    <div class="text-center py-12">
+      <h1 class="text-5xl font-bold text-gray-800 mb-6">Welcome to <span class="text-blue-600">Kidpreneur</span></h1>
+      <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        Where young minds turn brilliant ideas into reality. Showcase your innovative startup concepts and get inspired by fellow student entrepreneurs.
+      </p>
+      
+      <!-- Quick Stats -->
+      <div class="grid md:grid-cols-4 gap-6 mb-16">
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+          <div class="text-3xl font-bold text-blue-600" id="totalIdeas">0</div>
+          <div class="text-gray-600">Total Ideas</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+          <div class="text-3xl font-bold text-green-600" id="totalUsers">0</div>
+          <div class="text-gray-600">Active Users</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+          <div class="text-3xl font-bold text-purple-600" id="totalVotes">0</div>
+          <div class="text-gray-600">Total Votes</div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+          <div class="text-3xl font-bold text-orange-600" id="totalComments">0</div>
+          <div class="text-gray-600">Comments</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 mt-16">
+        <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-lightbulb text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Share Ideas</h3>
+          <p class="text-gray-600">Submit your innovative startup concepts and get feedback from the community.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-users text-2xl text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Get Inspired</h3>
+          <p class="text-gray-600">Learn from successful young entrepreneurs and their incredible journeys.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-rocket text-2xl text-purple-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Build Community</h3>
+          <p class="text-gray-600">Connect with like-minded students who are passionate about innovation and entrepreneurship.</p>
+        </div>
+      </div>
+      
+      <!-- Leaderboard Preview -->
+      <div class="mt-16 bg-white rounded-xl p-8 shadow-lg">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">🏆 Top Contributors This Month</h3>
+        <div id="leaderboardPreview" class="space-y-4"></div>
+      </div>
+
+      <div class="mt-12">
+        <button onclick="showSection('submit')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors transform hover:scale-105">
+          Share Your Idea Now
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- User Profile Section -->
+  <section id="profile" class="fade-in hidden">
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div class="text-center mb-8">
+          <div class="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-user text-5xl text-white"></i>
+          </div>
+          <h2 class="text-3xl font-bold text-gray-800" id="profileName">Create Your Profile</h2>
+          <p class="text-gray-600" id="profileTitle">Young Entrepreneur</p>
+          <div class="flex justify-center mt-4 space-x-2" id="profileBadges"></div>
+        </div>
+
+        <!-- Profile Form -->
+        <form id="profileForm" class="grid md:grid-cols-2 gap-6 mb-8">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <input type="text" id="userFullName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+            <input type="number" id="userAge" min="8" max="18" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">School</label>
+            <input type="text" id="userSchool" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+            <input type="text" id="userLocation" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+            <textarea id="userBio" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Tell us about yourself and your entrepreneurial interests..."></textarea>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Technology"> Technology</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Environment"> Environment</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Health"> Health</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Education"> Education</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Arts"> Arts</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Sports"> Sports</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Social Impact"> Social Impact</label>
+              <label class="flex items-center"><input type="checkbox" class="interest-checkbox" value="Gaming"> Gaming</label>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">Save Profile</button>
+          </div>
+        </form>
+
+        <!-- User Stats -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-blue-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-600" id="userIdeasCount">0</div>
+            <div class="text-blue-600">Ideas Submitted</div>
+          </div>
+          <div class="bg-green-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-green-600" id="userVotesReceived">0</div>
+            <div class="text-green-600">Votes Received</div>
+          </div>
+          <div class="bg-purple-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-purple-600" id="userCommentsMade">0</div>
+            <div class="text-purple-600">Comments Made</div>
+          </div>
+          <div class="bg-orange-50 rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-orange-600" id="userPoints">0</div>
+            <div class="text-orange-600">Total Points</div>
+          </div>
+        </div>
+
+        <!-- User's Ideas -->
+        <div>
+          <h3 class="text-xl font-bold text-gray-800 mb-4">Your Ideas</h3>
+          <div id="userIdeasList" class="space-y-4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Submit Idea Section -->
+  <section id="submit" class="fade-in hidden">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-lightbulb text-3xl text-yellow-600"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-800">Submit Your Brilliant Idea</h2>
+      </div>
+      
+      <!-- Multi-step form -->
+      <div class="mb-8">
+        <div class="flex justify-between items-center">
+          <div class="step-indicator active" data-step="1">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">1</div>
+            <div class="text-xs mt-1">Basic Info</div>
+          </div>
+          <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div></div>
+          <div class="step-indicator" data-step="2">
+            <div class="w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold">2</div>
+            <div class="text-xs mt-1">Details</div>
+          </div>
+          <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div></div>
+          <div class="step-indicator" data-step="3">
+            <div class="w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold">3</div>
+            <div class="text-xs mt-1">Media</div>
+          </div>
+          <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div></div>
+          <div class="step-indicator" data-step="4">
+            <div class="w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold">4</div>
+            <div class="text-xs mt-1">Review</div>
+          </div>
+        </div>
+      </div>
+
+      <form id="ideaForm" class="space-y-6">
+        <!-- Step 1: Basic Information -->
+        <div class="form-step active" data-step="1">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+              <input type="text" id="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <div>
+              <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Idea Title</label>
+              <input type="text" id="title" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <div>
+              <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <select id="category" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Select a Category</option>
+                <option value="Technology">Technology</option>
+                <option value="Environment">Environment</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="Arts & Creativity">Arts & Creativity</option>
+                <option value="Sports & Fitness">Sports & Fitness</option>
+                <option value="Social Impact">Social Impact</option>
+                <option value="Gaming & Entertainment">Gaming & Entertainment</option>
+              </select>
+            </div>
+            <div>
+              <label for="stage" class="block text-sm font-medium text-gray-700 mb-2">Development Stage</label>
+              <select id="stage" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Select Stage</option>
+                <option value="Concept">Just an Idea</option>
+                <option value="Research">Researching</option>
+                <option value="Prototype">Building Prototype</option>
+                <option value="Testing">Testing with Users</option>
+                <option value="Launch">Ready to Launch</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Detailed Information -->
+        <div class="form-step" data-step="2">
+          <div class="space-y-6">
+            <div>
+              <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Idea Description</label>
+              <textarea id="description" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe your idea in detail..."></textarea>
+            </div>
+            <div>
+              <label for="problem" class="block text-sm font-medium text-gray-700 mb-2">What problem does this solve?</label>
+              <textarea id="problem" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Explain the problem your idea addresses..."></textarea>
+            </div>
+            <div>
+              <label for="solution" class="block text-sm font-medium text-gray-700 mb-2">Your Solution</label>
+              <textarea id="solution" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="How does your idea solve this problem?"></textarea>
+            </div>
+            <div>
+              <label for="target" class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
+              <input type="text" id="target" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Who would use your product/service?">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Media & Visuals -->
+        <div class="form-step" data-step="3">
+          <div class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
+              <input type="file" id="ideaImages" multiple accept="image/*" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Record Pitch Video (Optional)</label>
+              <div class="space-y-4">
+                <div class="flex space-x-4">
+                  <button type="button" id="startRecording" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                    <i class="fas fa-video mr-2"></i>Start Recording
+                  </button>
+                  <button type="button" id="stopRecording" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg" disabled>
+                    <i class="fas fa-stop mr-2"></i>Stop Recording
+                  </button>
+                </div>
+                <video id="videoPreview" class="w-full max-w-md rounded-lg" controls style="display:none;"></video>
+              </div>
+            </div>
+            <div>
+              <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
+              <input type="text" id="tags" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="innovation, technology, youth...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Review -->
+        <div class="form-step" data-step="4">
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Review Your Submission</h3>
+            <div id="submissionPreview" class="space-y-4"></div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          <button type="button" id="prevStep" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg" style="display:none;">Previous</button>
+          <button type="button" id="nextStep" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">Next</button>
+          <button type="submit" id="submitIdea" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg" style="display:none;">Submit Idea</button>
+        </div>
+
+        <div class="mt-6">
+          <div class="flex items-center">
+            <input type="checkbox" id="agree" required class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+            <label for="agree" class="ml-2 text-sm text-gray-600">I agree to share my idea with the Kidpreneur community</label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Enhanced Ideas Display Section -->
+  <section id="ideas" class="fade-in hidden">
+    <div class="text-center mb-6">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-star text-3xl text-green-600"></i>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800">Student Startup Showcase</h2>
+      <p class="text-gray-600 mt-2">Discover amazing ideas from young innovators around the world</p>
+    </div>
+    
+    <!-- Enhanced Search & Filters -->
+    <div class="mb-6 bg-white rounded-xl p-6 shadow-lg">
+      <div class="grid md:grid-cols-4 gap-4">
+        <input type="text" id="searchInput" placeholder="Search ideas..." class="px-4 py-2 border rounded-lg">
+        <select id="categoryFilter" class="px-4 py-2 border rounded-lg">
+          <option value="">All Categories</option>
+          <option value="Technology">Technology</option>
+          <option value="Environment">Environment</option>
+          <option value="Health">Health</option>
+          <option value="Education">Education</option>
+          <option value="Arts & Creativity">Arts & Creativity</option>
+          <option value="Sports & Fitness">Sports & Fitness</option>
+          <option value="Social Impact">Social Impact</option>
+          <option value="Gaming & Entertainment">Gaming & Entertainment</option>
+        </select>
+        <select id="stageFilter" class="px-4 py-2 border rounded-lg">
+          <option value="">All Stages</option>
+          <option value="Concept">Concept</option>
+          <option value="Research">Research</option>
+          <option value="Prototype">Prototype</option>
+          <option value="Testing">Testing</option>
+          <option value="Launch">Launch</option>
+        </select>
+        <select id="sortFilter" class="px-4 py-2 border rounded-lg">
+          <option value="votes">Most Votes</option>
+          <option value="comments">Most Comments</option>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Featured Ideas Carousel -->
+    <div class="mb-8 bg-white rounded-xl p-6 shadow-lg">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">🌟 Featured Ideas</h3>
+      <div class="overflow-x-auto flex space-x-4" id="featuredIdeas"></div>
+    </div>
+
+    <!-- Ideas Grid -->
+    <div class="idea-grid" id="ideasContainer"></div>
+  </section>
+
+  <!-- Business Tools Section -->
+  <section id="business-tools" class="fade-in hidden">
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-tools text-3xl text-indigo-600"></i>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800">Business Tools</h2>
+      <p class="text-gray-600 mt-2">Essential tools to help you plan and grow your startup</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Business Plan Builder -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-file-alt text-2xl text-blue-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Business Plan Builder</h3>
+        <p class="text-gray-600 mb-4">Create a professional business plan step by step</p>
+        <button onclick="openBusinessPlan()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">Start Building</button>
+      </div>
+
+      <!-- Financial Calculator -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-calculator text-2xl text-green-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Financial Calculator</h3>
+        <p class="text-gray-600 mb-4">Calculate costs, profits, and break-even points</p>
+        <button onclick="openFinancialCalculator()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg">Calculate</button>
+      </div>
+
+      <!-- Pitch Deck Creator -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-presentation text-2xl text-purple-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Pitch Deck Creator</h3>
+        <p class="text-gray-600 mb-4">Build compelling presentations for your idea</p>
+        <button onclick="openPitchDeck()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg">Create Deck</button>
+      </div>
+
+      <!-- SWOT Analysis -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-chart-line text-2xl text-red-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">SWOT Analysis</h3>
+        <p class="text-gray-600 mb-4">Analyze strengths, weaknesses, opportunities, threats</p>
+        <button onclick="openSWOT()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">Analyze</button>
+      </div>
+
+      <!-- Market Research -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-search text-2xl text-yellow-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Market Research</h3>
+        <p class="text-gray-600 mb-4">Research your target market and competitors</p>
+        <button onclick="openMarketResearch()" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg">Research</button>
+      </div>
+
+      <!-- Logo Maker -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-palette text-2xl text-pink-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Logo Maker</h3>
+        <p class="text-gray-600 mb-4">Design a professional logo for your startup</p>
+        <button onclick="openLogoMaker()" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-lg">Design Logo</button>
+      </div>
+    </div>
+
+    <!-- Tool Modals would go here -->
+    <div id="toolModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+          <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times text-2xl"></i>
+          </button>
+        </div>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Learning Section -->
+  <section id="learning" class="fade-in hidden">
+    <div class="text-center mb-12">
+      <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-book-open text-3xl text-indigo-600"></i>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800">Learning Hub</h2>
+      <p class="text-gray-600 mt-2">Interactive courses and resources to boost your entrepreneurial skills</p>
+    </div>
+
+    <!-- Learning Progress -->
+    <div class="bg-white rounded-xl p-6 shadow-lg mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">Your Learning Progress</h3>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <div class="flex justify-between text-sm text-gray-600 mb-2">
+            <span>Courses Completed</span>
+            <span id="completedCourses">0/10</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div id="courseProgress" class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm text-gray-600 mb-2">
+            <span>Quizzes Passed</span>
+            <span id="passedQuizzes">0/20</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div id="quizProgress" class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Categories -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer" onclick="openCourse('ideation')">
+        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-lightbulb text-2xl text-yellow-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Ideation & Brainstorming</h3>
+        <p class="text-gray-600 mb-4">Learn to generate and refine innovative ideas</p>
+        <div class="text-sm text-blue-600">4 Lessons • 2 Quizzes</div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer" onclick="openCourse('business')">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-chart-bar text-2xl text-blue-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Business Fundamentals</h3>
+        <p class="text-gray-600 mb-4">Master the basics of starting a business</p>
+        <div class="text-sm text-blue-600">6 Lessons • 3 Quizzes</div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer" onclick="openCourse('marketing')">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-megaphone text-2xl text-green-600"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">Marketing & Branding</h3>
+        <p class="text-gray-600 mb-4">Build your brand and reach customers</p>
+        <div class="text-sm text-blue-600">5 Lessons • 2 Quizzes</div>
+      </div>
+    </div>
+
+    <!-- Interactive Quiz Section -->
+    <div class="bg-white rounded-xl p-6 shadow-lg mb-8">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Knowledge Check</h3>
+      <div id="quizContainer">
+        <div class="quiz-question mb-6">
+          <h4 class="text-lg font-semibold text-gray-800 mb-4">What is the most important factor when validating a business idea?</h4>
+          <div class="space-y-2">
+            <div class="quiz-option border rounded-lg p-3 cursor-pointer hover:bg-gray-50" data-answer="correct">
+              Understanding customer needs and problems
+            </div>
+            <div class="quiz-option border rounded-lg p-3 cursor-pointer hover:bg-gray-50" data-answer="incorrect">
+              Having the most innovative technology
+            </div>
+            <div class="quiz-option border rounded-lg p-3 cursor-pointer hover:bg-gray-50" data-answer="incorrect">
+              Getting funding from investors
+            </div>
+            <div class="quiz-option border rounded-lg p-3 cursor-pointer hover:bg-gray-50" data-answer="incorrect">
+              Having a perfect business plan
+            </div>
+          </div>
+          <div class="quiz-result mt-4 hidden">
+            <div class="quiz-explanation bg-blue-50 p-4 rounded-lg">
+              <strong>Correct!</strong> Understanding your customers' needs and the problems you're solving is crucial for any successful business.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resource Library -->
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">📚 Recommended Reading</h3>
+        <div class="space-y-3">
+          <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+            <i class="fas fa-book text-blue-600 mr-3"></i>
+            <div>
+              <div class="font-medium">The Lean Startup (Youth Edition)</div>
+              <div class="text-sm text-gray-600">Essential concepts for young entrepreneurs</div>
+            </div>
+          </div>
+          <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+            <i class="fas fa-book text-blue-600 mr-3"></i>
+            <div>
+              <div class="font-medium">Young Entrepreneur's Guide</div>
+              <div class="text-sm text-gray-600">Step-by-step startup guidance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">🎯 Skill Assessments</h3>
+        <div class="space-y-3">
+          <button class="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+            <div class="font-medium">Entrepreneurial Mindset Assessment</div>
+            <div class="text-sm text-gray-600">Discover your entrepreneurial strengths</div>
+          </button>
+          <button class="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+            <div class="font-medium">Business Skills Evaluation</div>
+            <div class="text-sm text-gray-600">Identify areas for improvement</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitions Section -->
+  <section id="competitions" class="fade-in hidden">
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-trophy text-3xl text-orange-600"></i>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800">Competitions & Challenges</h2>
+      <p class="text-gray-600 mt-2">Participate in exciting challenges and win amazing prizes</p>
+    </div>
+
+    <!-- Active Competitions -->
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-6 shadow-lg text-white">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold">🌍 Sustainability Challenge</h3>
+          <div class="badge badge-gold">Active</div>
+        </div>
+        <p class="mb-4">Create an innovative solution for environmental problems affecting your community</p>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <div class="text-2xl font-bold">15</div>
+            <div class="text-sm opacity-90">Days Left</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold">$1000</div>
+            <div class="text-sm opacity-90">Prize Pool</div>
+          </div>
+        </div>
+        <button class="w-full bg-white text-purple-600 font-bold py-2 rounded-lg hover:bg-gray-100">
+          Join Challenge
+        </button>
+      </div>
+
+      <div class="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl p-6 shadow-lg text-white">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold">🚀 Tech Innovation Contest</h3>
+          <div class="badge badge-silver">Upcoming</div>
+        </div>
+        <p class="mb-4">Develop the next big tech solution for students by students</p>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <div class="text-2xl font-bold">30</div>
+            <div class="text-sm opacity-90">Days to Start</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold">$2000</div>
+            <div class="text-sm opacity-90">Prize Pool</div>
+          </div>
+        </div>
+        <button class="w-full bg-white text-blue-600 font-bold py-2 rounded-lg hover:bg-gray-100">
+          Get Notified
+        </button>
+      </div>
+    </div>
+
+    <!-- Monthly Challenges -->
+    <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">🗓️ Monthly Challenges</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+          <div class="text-4xl mb-4">🎨</div>
+          <h4 class="font-semibold text-gray-800 mb-2">Design Challenge</h4>
+          <p class="text-gray-600 text-sm mb-4">Create the best user interface for a mobile app</p>
+          <div class="text-green-600 font-medium">50 Points</div>
+        </div>
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+          <div class="text-4xl mb-4">💡</div>
+          <h4 class="font-semibold text-gray-800 mb-2">Innovation Sprint</h4>
+          <p class="text-gray-600 text-sm mb-4">Solve a local community problem in 48 hours</p>
+          <div class="text-green-600 font-medium">100 Points</div>
+        </div>
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+          <div class="text-4xl mb-4">📈</div>
+          <h4 class="font-semibold text-gray-800 mb-2">Pitch Perfect</h4>
+          <p class="text-gray-600 text-sm mb-4">Create a 60-second video pitch for your idea</p>
+          <div class="text-green-600 font-medium">75 Points</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="bg-white rounded-xl p-8 shadow-lg">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">🏆 Competition Leaderboard</h3>
+      <div id="competitionLeaderboard" class="space-y-4"></div>
+    </div>
+  </section>
+
+  <!-- Analytics Section -->
+  <section id="analytics" class="fade-in hidden">
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-chart-line text-3xl text-purple-600"></i>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800">Platform Analytics</h2>
+      <p class="text-gray-600 mt-2">Insights and trends from our community</p>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-3xl font-bold text-blue-600" id="analyticsIdeas">0</div>
+        <div class="text-gray-600">Total Ideas</div>
+        <div class="text-green-500 text-sm mt-1">↑ +12% this month</div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-3xl font-bold text-green-600" id="analyticsUsers">0</div>
+        <div class="text-gray-600">Active Users</div>
+        <div class="text-green-500 text-sm mt-1">↑ +8% this month</div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-3xl font-bold text-purple-600" id="analyticsEngagement">0</div>
+        <div class="text-gray-600">Engagement Rate</div>
+        <div class="text-green-500 text-sm mt-1">↑ +15% this month</div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-3xl font-bold text-orange-600" id="analyticsSuccess">0</div>
+        <div class="text-gray-600">Success Rate</div>
+        <div class="text-green-500 text-sm mt-1">↑ +5% this month</div>
+      </div>
+    </div>
+
+    <!-- Category Distribution -->
+    <div class="grid md:grid-cols-2 gap-8 mb-8">
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Ideas by Category</h3>
+        <div id="categoryChart" class="space-y-3"></div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Development Stages</h3>
+        <div id="stageChart" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- Trends -->
+    <div class="bg-white rounded-xl p-6 shadow-lg">
+      <h3 class="text-xl font-bold text-gray-800 mb-4">Trending Topics</h3>
+      <div class="flex flex-wrap gap-3">
+        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">#AI</span>
+        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">#Sustainability</span>
+        <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">#Healthcare</span>
+        <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">#Education</span>
+        <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">#SocialImpact</span>
+        <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm">#Innovation</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Enhanced Footer -->
+<footer class="bg-gray-800 text-white mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center mb-4">
+          <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-2"></i>
+          <span class="text-xl font-bold">Kidpreneur</span>
+        </div>
+        <p class="text-gray-300">Empowering the next generation of innovators and entrepreneurs worldwide.</p>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-4">Platform</h4>
+        <ul class="space-y-2">
+          <li><button onclick="showSection('home')" class="text-gray-300 hover:text-white">Home</button></li>
+          <li><button onclick="showSection('submit')" class="text-gray-300 hover:text-white">Submit Idea</button></li>
+          <li><button onclick="showSection('ideas')" class="text-gray-300 hover:text-white">Showcase</button></li>
+          <li><button onclick="showSection('business-tools')" class="text-gray-300 hover:text-white">Tools</button></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-4">Learning</h4>
+        <ul class="space-y-2">
+          <li><button onclick="showSection('learning')" class="text-gray-300 hover:text-white">Courses</button></li>
+          <li><button onclick="showSection('competitions')" class="text-gray-300 hover:text-white">Competitions</button></li>
+          <li><a href="#" class="text-gray-300 hover:text-white">Resources</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-white">Mentorship</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-4">Community</h4>
+        <div class="flex space-x-4 mb-4">
+          <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
+          <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+          <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+          <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin text-xl"></i></a>
+          <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-discord text-xl"></i></a>
+        </div>
+        <div class="text-sm text-gray-400">
+          Join our community of young innovators
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+      <p>© 2024 Kidpreneur. All rights reserved. • Building the future, one idea at a time.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Enhanced Data Management
+let ideas = JSON.parse(localStorage.getItem('kidpreneurIdeas')) || [
+  {id:1,name:"Emma Chen",title:"Eco-Friendly School Supplies",description:"A subscription service delivering sustainable, plant-based school supplies to schools worldwide.",problem:"Traditional school supplies contribute to environmental waste",solution:"Biodegradable and renewable materials",target:"Elementary and middle schools",color:"green",category:"Environment",stage:"Prototype",votes:15,comments:[],tags:["sustainability","education","environment"],images:[],video:null,createdAt:new Date('2024-01-15').toISOString()},
+  {id:2,name:"Alex Rodriguez",title:"Study Buddy App",description:"Mobile app connecting students for collaborative studying and peer tutoring sessions.",problem:"Students struggle with difficult subjects alone",solution:"Peer-to-peer learning platform with matching algorithms",target:"High school and college students",color:"blue",category:"Technology",stage:"Testing",votes:23,comments:[],tags:["education","technology","social"],images:[],video:null,createdAt:new Date('2024-01-20').toISOString()},
+  {id:3,name:"Sophia Williams",title:"Healthy Snack Vending",description:"Smart vending machines offering nutritious snacks with AI-powered recommendations.",problem:"Lack of healthy food options in schools",solution:"AI-powered vending machines with nutritious options",target:"Students and health-conscious consumers",color:"orange",category:"Health",stage:"Concept",votes:31,comments:[],tags:["health","technology","nutrition"],images:[],video:null,createdAt:new Date('2024-02-01').toISOString()}
+];
+
+let users = JSON.parse(localStorage.getItem('kidpreneurUsers')) || {};
+let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+let userUpvotes = JSON.parse(localStorage.getItem('userUpvotes')) || {};
+let comments = JSON.parse(localStorage.getItem('kidpreneurComments')) || {};
+let userProgress = JSON.parse(localStorage.getItem('userProgress')) || {completedCourses:0,passedQuizzes:0,points:0};
+let currentStep = 1;
+let maxSteps = 4;
+let mediaRecorder = null;
+let recordedVideo = null;
+
+// Enhanced User System
+function initializeUser() {
+  if (!currentUser) {
+    currentUser = {
+      id: Date.now(),
+      name: 'Guest User',
+      email: '',
+      age: null,
+      school: '',
+      location: '',
+      bio: '',
+      interests: [],
+      joinDate: new Date().toISOString(),
+      ideasSubmitted: 0,
+      votesReceived: 0,
+      commentsMade: 0,
+      points: 0,
+      badges: [],
+      completedCourses: [],
+      achievements: []
+    };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }
+  updateUserProfile();
+}
+
+function updateUserProfile() {
+  if (currentUser) {
+    document.getElementById('profileName').textContent = currentUser.name;
+    document.getElementById('userFullName').value = currentUser.name;
+    document.getElementById('userAge').value = currentUser.age || '';
+    document.getElementById('userSchool').value = currentUser.school || '';
+    document.getElementById('userLocation').value = currentUser.location || '';
+    document.getElementById('userBio').value = currentUser.bio || '';
+    
+    // Update interests checkboxes
+    document.querySelectorAll('.interest-checkbox').forEach(checkbox => {
+      checkbox.checked = currentUser.interests.includes(checkbox.value);
+    });
+
+    updateUserStats();
+    displayUserBadges();
+  }
+}
+
+function updateUserStats() {
+  if (currentUser) {
+    const userIdeas = ideas.filter(idea => idea.name === currentUser.name);
+    const votesReceived = userIdeas.reduce((total, idea) => total + (idea.votes || 0), 0);
+    
+    document.getElementById('userIdeasCount').textContent = userIdeas.length;
+    document.getElementById('userVotesReceived').textContent = votesReceived;
+    document.getElementById('userCommentsMade').textContent = currentUser.commentsMade || 0;
+    document.getElementById('userPoints').textContent = currentUser.points || 0;
+    
+    displayUserIdeas(userIdeas);
+  }
+}
+
+function displayUserBadges() {
+  const badgesContainer = document.getElementById('profileBadges');
+  badgesContainer.innerHTML = '';
+  
+  if (currentUser && currentUser.badges) {
+    currentUser.badges.forEach(badge => {
+      const badgeElement = document.createElement('span');
+      badgeElement.className = `badge badge-${badge.type}`;
+      badgeElement.textContent = badge.name;
+      badgesContainer.appendChild(badgeElement);
+    });
+  }
+}
+
+function displayUserIdeas(userIdeas) {
+  const container = document.getElementById('userIdeasList');
+  container.innerHTML = '';
+  
+  if (userIdeas.length === 0) {
+    container.innerHTML = '<p class="text-gray-500">You haven\'t submitted any ideas yet. <button onclick="showSection(\'submit\')" class="text-blue-600 hover:underline">Submit your first idea!</button></p>';
+    return;
+  }
+
+  userIdeas.forEach(idea => {
+    const ideaCard = document.createElement('div');
+    ideaCard.className = 'bg-gray-50 rounded-lg p-4';
+    ideaCard.innerHTML = `
+      <div class="flex justify-between items-start">
+        <div class="flex-1">
+          <h4 class="font-semibold text-gray-800">${idea.title}</h4>
+          <p class="text-gray-600 text-sm mt-1">${idea.category} • ${idea.stage}</p>
+          <p class="text-gray-700 mt-2">${idea.description.substring(0, 100)}...</p>
+        </div>
+        <div class="text-right ml-4">
+          <div class="text-lg font-bold text-blue-600">${idea.votes || 0}</div>
+          <div class="text-xs text-gray-500">votes</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(ideaCard);
+  });
+}
+
+// Enhanced Form Management
+function initializeFormSteps() {
+  updateStepIndicators();
+  updateStepButtons();
+}
+
+function updateStepIndicators() {
+  document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+    const stepNumber = index + 1;
+    const stepDiv = indicator.querySelector('div');
+    
+    if (stepNumber < currentStep) {
+      stepDiv.className = 'w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-sm font-bold';
+      stepDiv.innerHTML = '<i class="fas fa-check"></i>';
+    } else if (stepNumber === currentStep) {
+      stepDiv.className = 'w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold';
+      stepDiv.textContent = stepNumber;
+    } else {
+      stepDiv.className = 'w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold';
+      stepDiv.textContent = stepNumber;
+    }
+  });
+
+  // Update progress bars
+  const progressBars = document.querySelectorAll('.step-indicator + .flex-1 div');
+  progressBars.forEach((bar, index) => {
+    const progress = Math.max(0, Math.min(100, ((currentStep - 1) / (maxSteps - 1)) * 100));
+    if (index < currentStep - 1) {
+      bar.style.width = '100%';
+    } else {
+      bar.style.width = '0%';
+    }
+  });
+}
+
+function updateStepButtons() {
+  document.getElementById('prevStep').style.display = currentStep > 1 ? 'block' : 'none';
+  document.getElementById('nextStep').style.display = currentStep < maxSteps ? 'block' : 'none';
+  document.getElementById('submitIdea').style.display = currentStep === maxSteps ? 'block' : 'none';
+}
+
+function nextStep() {
+  if (currentStep < maxSteps) {
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+    currentStep++;
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+    updateStepIndicators();
+    updateStepButtons();
+    
+    if (currentStep === maxSteps) {
+      generateSubmissionPreview();
+    }
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+    currentStep--;
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+    updateStepIndicators();
+    updateStepButtons();
+  }
+}
+
+function generateSubmissionPreview() {
+  const preview = document.getElementById('submissionPreview');
+  const formData = {
+    name: document.getElementById('name').value,
+    title: document.getElementById('title').value,
+    category: document.getElementById('category').value,
+    stage: document.getElementById('stage').value,
+    description: document.getElementById('description').value,
+    problem: document.getElementById('problem').value,
+    solution: document.getElementById('solution').value,
+    target: document.getElementById('target').value,
+    tags: document.getElementById('tags').value
+  };
+  
+  preview.innerHTML = `
+    <div class="space-y-4">
+      <div><strong>Title:</strong> ${formData.title}</div>
+      <div><strong>Category:</strong> ${formData.category}</div>
+      <div><strong>Stage:</strong> ${formData.stage}</div>
+      <div><strong>Description:</strong> ${formData.description}</div>
+      <div><strong>Problem:</strong> ${formData.problem}</div>
+      <div><strong>Solution:</strong> ${formData.solution}</div>
+      <div><strong>Target Audience:</strong> ${formData.target}</div>
+      <div><strong>Tags:</strong> ${formData.tags}</div>
+    </div>
+  `;
+}
+
+// Enhanced Media Handling
+function initializeMediaHandling() {
+  document.getElementById('ideaImages').addEventListener('change', handleImageUpload);
+  document.getElementById('startRecording').addEventListener('click', startVideoRecording);
+  document.getElementById('stopRecording').addEventListener('click', stopVideoRecording);
+}
+
+function handleImageUpload(event) {
+  const files = event.target.files;
+  const preview = document.getElementById('imagePreview');
+  preview.innerHTML = '';
+  
+  Array.from(files).forEach(file => {
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'w-full h-24 object-cover rounded-lg';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+async function startVideoRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    const chunks = [];
+    
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) chunks.push(event.data);
+    };
+    
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      recordedVideo = blob;
+      const videoUrl = URL.createObjectURL(blob);
+      const videoPreview = document.getElementById('videoPreview');
+      videoPreview.src = videoUrl;
+      videoPreview.style.display = 'block';
+      stream.getTracks().forEach(track => track.stop());
+    };
+    
+    mediaRecorder.start();
+    document.getElementById('startRecording').disabled = true;
+    document.getElementById('stopRecording').disabled = false;
+  } catch (error) {
+    console.error('Error starting video recording:', error);
+    alert('Error starting video recording. Please make sure you have a camera and microphone.');
+  }
+}
+
+function stopVideoRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+    document.getElementById('startRecording').disabled = false;
+    document.getElementById('stopRecording').disabled = true;
+  }
+}
+
+// Enhanced Ideas Display
+function displayIdeas(filtered = ideas) {
+  const container = document.getElementById('ideasContainer');
+  container.innerHTML = '';
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="col-span-full text-center py-12"><div class="text-gray-500 text-lg">No ideas found matching your criteria.</div></div>';
+    return;
+  }
+
+  const countDiv = document.createElement('div');
+  countDiv.className = 'col-span-full text-gray-700 mb-4 text-center';
+  countDiv.innerHTML = `<strong>Showing ${filtered.length} ideas</strong>`;
+  container.appendChild(countDiv);
+
+  filtered.forEach((idea, index) => {
+    const ideaCard = document.createElement('div');
+    ideaCard.className = 'bg-white rounded-xl overflow-hidden shadow-lg card-hover';
+    const colorClasses = {
+      green: 'bg-green-100 text-green-600',
+      blue: 'bg-blue-100 text-blue-600',
+      orange: 'bg-orange-100 text-orange-600',
+      purple: 'bg-purple-100 text-purple-600',
+      red: 'bg-red-100 text-red-600'
+    };
+    
+    const disabled = userUpvotes[idea.id] ? 'opacity-50 cursor-not-allowed' : '';
+    const userHasUpvoted = userUpvotes[idea.id];
+    const ideaComments = comments[idea.id] || [];
+    
+    ideaCard.innerHTML = `
+      <div class="logo-placeholder ${colorClasses[idea.color] || 'bg-gray-100 text-gray-600'}">
+        <i class="fas fa-lightbulb"></i>
+      </div>
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="text-xl font-semibold text-gray-800">${idea.title}</h3>
+          <span class="px-2 py-1 bg-${idea.color}-100 text-${idea.color}-600 text-xs rounded-full">${idea.stage}</span>
+        </div>
+        <p class="text-gray-600 mb-2">By: <strong>${idea.name}</strong></p>
+        <p class="text-gray-600 mb-2">Category: <span class="font-medium">${idea.category}</span></p>
+        <p class="text-gray-700 mb-4">${idea.description}</p>
+        ${idea.problem ? `<p class="text-gray-700 mb-2"><strong>Problem:</strong> ${idea.problem}</p>` : ''}
+        ${idea.solution ? `<p class="text-gray-700 mb-2"><strong>Solution:</strong> ${idea.solution}</p>` : ''}
+        ${idea.tags && idea.tags.length > 0 ? `
+          <div class="flex flex-wrap gap-1 mb-4">
+            ${idea.tags.map(tag => `<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">#${tag}</span>`).join('')}
+          </div>
+        ` : ''}
+        
+        <div class="flex items-center justify-between mt-4">
+          <div class="flex items-center space-x-4">
+            <button class="flex items-center space-x-1 ${userHasUpvoted ? 'text-blue-600' : 'text-gray-500 hover:text-blue-600'} ${disabled}" onclick="upvote(${idea.id})" ${userHasUpvoted ? 'disabled' : ''}>
+              <i class="fas fa-thumbs-up"></i>
+              <span id="votes-${idea.id}">${idea.votes || 0}</span>
+            </button>
+            <button class="flex items-center space-x-1 text-gray-500 hover:text-green-600" onclick="toggleComments(${idea.id})">
+              <i class="fas fa-comment"></i>
+              <span>${ideaComments.length}</span>
+            </button>
+            <button class="flex items-center space-x-1 text-gray-500 hover:text-purple-600" onclick="shareIdea(${idea.id})">
+              <i class="fas fa-share"></i>
+            </button>
+          </div>
+          <div class="text-xs text-gray-500">
+            ${new Date(idea.createdAt).toLocaleDateString()}
+          </div>
+        </div>
+        
+        <!-- Comments Section -->
+        <div id="comments-${idea.id}" class="mt-4 hidden">
+          <div class="border-t pt-4">
+            <div class="mb-4">
+              <textarea id="comment-input-${idea.id}" placeholder="Add a comment..." class="w-full p-2 border rounded text-sm" rows="2"></textarea>
+              <button onclick="addComment(${idea.id})" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+                Post Comment
+              </button>
+            </div>
+            <div id="comments-list-${idea.id}" class="space-y-2">
+              ${ideaComments.map(comment => `
+                <div class="bg-gray-50 p-3 rounded text-sm">
+                  <div class="font-medium text-gray-800">${comment.author}</div>
+                  <div class="text-gray-700">${comment.text}</div>
+                  <div class="text-xs text-gray-500 mt-1">${new Date(comment.createdAt).toLocaleDateString()}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(ideaCard);
+  });
+}
+
+// Enhanced Comments System
+function toggleComments(ideaId) {
+  const commentsSection = document.getElementById(`comments-${ideaId}`);
+  commentsSection.classList.toggle('hidden');
+}
+
+function addComment(ideaId) {
+  const commentInput = document.getElementById(`comment-input-${ideaId}`);
+  const commentText = commentInput.value.trim();
+  
+  if (!commentText) {
+    alert('Please enter a comment.');
+    return;
+  }
+  
+  if (!comments[ideaId]) {
+    comments[ideaId] = [];
+  }
+  
+  const newComment = {
+    id: Date.now(),
+    text: commentText,
+    author: currentUser ? currentUser.name : 'Anonymous',
+    createdAt: new Date().toISOString()
+  };
+  
+  comments[ideaId].push(newComment);
+  localStorage.setItem('kidpreneurComments', JSON.stringify(comments));
+  
+  // Update user stats
+  if (currentUser) {
+    currentUser.commentsMade = (currentUser.commentsMade || 0) + 1;
+    currentUser.points = (currentUser.points || 0) + 2; // 2 points per comment
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }
+  
+  commentInput.value = '';
+  displayIdeas(ideas); // Refresh display
+  updateStats();
+}
+
+function shareIdea(ideaId) {
+  const idea = ideas.find(i => i.id === ideaId);
+  if (idea) {
+    if (navigator.share) {
+      navigator.share({
+        title: idea.title,
+        text: idea.description,
+        url: window.location.href
+      });
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      const shareText = `Check out this amazing idea: "${idea.title}" by ${idea.name}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText);
+        alert('Idea details copied to clipboard!');
+      } else {
+        prompt('Copy this text to share:', shareText);
+      }
+    }
+  }
+}
+
+// Enhanced Voting System
+function upvote(ideaId) {
+  if (userUpvotes[ideaId]) return;
+  
+  const idea = ideas.find(i => i.id === ideaId);
+  if (idea) {
+    idea.votes = (idea.votes || 0) + 1;
+    userUpvotes[ideaId] = true;
+    
+    localStorage.setItem('kidpreneurIdeas', JSON.stringify(ideas));
+    localStorage.setItem('userUpvotes', JSON.stringify(userUpvotes));
+    
+    // Award points to user
+    if (currentUser) {
+      currentUser.points = (currentUser.points || 0) + 1;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+    
+    document.getElementById(`votes-${ideaId}`).textContent = idea.votes;
+    displayFeaturedIdeas();
+    updateStats();
+    checkAndAwardBadges();
+  }
+}
+
+// Badge System
+function checkAndAwardBadges() {
+  if (!currentUser) return;
+  
+  const newBadges = [];
+  const userIdeas = ideas.filter(idea => idea.name === currentUser.name);
+  const totalVotes = userIdeas.reduce((sum, idea) => sum + (idea.votes || 0), 0);
+  
+  // First Idea Badge
+  if (userIdeas.length >= 1 && !currentUser.badges.some(b => b.name === 'First Idea')) {
+    newBadges.push({name: 'First Idea', type: 'bronze'});
+  }
+  
+  // Popular Idea Badge
+  if (totalVotes >= 10 && !currentUser.badges.some(b => b.name === 'Popular')) {
+    newBadges.push({name: 'Popular', type: 'silver'});
+  }
+  
+  // Viral Idea Badge
+  if (totalVotes >= 50 && !currentUser.badges.some(b => b.name === 'Viral')) {
+    newBadges.push({name: 'Viral', type: 'gold'});
+  }
+  
+  if (newBadges.length > 0) {
+    currentUser.badges = [...(currentUser.badges || []), ...newBadges];
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    
+    // Show badge notification
+    newBadges.forEach(badge => {
+      showNotification(`🏆 New Badge Earned: ${badge.name}!`, 'success');
+    });
+  }
+}
+
+// Notification System
+function showNotification(message, type = 'info') {
+  const notification = document.createElement('div');
+  notification.className = `fixed top-20 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
+    type === 'success' ? 'bg-green-500 text-white' :
+    type === 'error' ? 'bg-red-500 text-white' :
+    'bg-blue-500 text-white'
+  }`;
+  notification.textContent = message;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Business Tools Functions
+function openBusinessPlan() {
+  document.getElementById('modalTitle').textContent = 'Business Plan Builder';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-medium mb-2">Business Name</label>
+          <input type="text" class="w-full p-3 border rounded-lg" placeholder="Enter your business name">
+        </div>
+        <div>
+          <label class="block font-medium mb-2">Industry</label>
+          <select class="w-full p-3 border rounded-lg">
+            <option>Technology</option>
+            <option>Education</option>
+            <option>Health</option>
+            <option>Environment</option>
+          </select>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block font-medium mb-2">Executive Summary</label>
+        <textarea class="w-full p-3 border rounded-lg" rows="4" placeholder="Briefly describe your business..."></textarea>
+      </div>
+      
+      <div>
+        <label class="block font-medium mb-2">Market Analysis</label>
+        <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="Who is your target market?"></textarea>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-medium mb-2">Revenue Model</label>
+          <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="How will you make money?"></textarea>
+        </div>
+        <div>
+          <label class="block font-medium mb-2">Marketing Strategy</label>
+          <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="How will you reach customers?"></textarea>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-4">
+        <button onclick="closeModal()" class="px-6 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+        <button onclick="generateBusinessPlan()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Generate Plan</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('toolModal').classList.remove('hidden');
+}
+
+function openFinancialCalculator() {
+  document.getElementById('modalTitle').textContent = 'Financial Calculator';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h4 class="font-semibold mb-4">Startup Costs</h4>
+          <div class="space-y-3">
+            <input type="number" placeholder="Equipment ($)" class="w-full p-2 border rounded startup-cost">
+            <input type="number" placeholder="Marketing ($)" class="w-full p-2 border rounded startup-cost">
+            <input type="number" placeholder="Legal/Admin ($)" class="w-full p-2 border rounded startup-cost">
+            <input type="number" placeholder="Other ($)" class="w-full p-2 border rounded startup-cost">
+          </div>
+          <div class="mt-4 pt-4 border-t">
+            <strong>Total Startup Costs: $<span id="totalStartupCosts">0</span></strong>
+          </div>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h4 class="font-semibold mb-4">Monthly Revenue/Costs</h4>
+          <div class="space-y-3">
+            <input type="number" placeholder="Expected Revenue ($)" class="w-full p-2 border rounded" id="monthlyRevenue">
+            <input type="number" placeholder="Operating Costs ($)" class="w-full p-2 border rounded" id="monthlyCosts">
+          </div>
+          <div class="mt-4 pt-4 border-t">
+            <strong>Monthly Profit: $<span id="monthlyProfit">0</span></strong>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-blue-50 p-4 rounded-lg">
+        <h4 class="font-semibold mb-2">Break-Even Analysis</h4>
+        <p>Months to break even: <strong><span id="breakEvenMonths">-</span></strong></p>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('toolModal').classList.remove('hidden');
+  
+  // Add event listeners for real-time calculation
+  setTimeout(() => {
+    document.querySelectorAll('.startup-cost, #monthlyRevenue, #monthlyCosts').forEach(input => {
+      input.addEventListener('input', calculateFinancials);
+    });
+  }, 100);
+}
+
+function calculateFinancials() {
+  const startupCosts = Array.from(document.querySelectorAll('.startup-cost'))
+    .reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+  
+  const monthlyRevenue = parseFloat(document.getElementById('monthlyRevenue').value) || 0;
+  const monthlyCosts = parseFloat(document.getElementById('monthlyCosts').value) || 0;
+  const monthlyProfit = monthlyRevenue - monthlyCosts;
+  
+  document.getElementById('totalStartupCosts').textContent = startupCosts.toLocaleString();
+  document.getElementById('monthlyProfit').textContent = monthlyProfit.toLocaleString();
+  
+  if (monthlyProfit > 0) {
+    const breakEvenMonths = Math.ceil(startupCosts / monthlyProfit);
+    document.getElementById('breakEvenMonths').textContent = breakEvenMonths;
+  } else {
+    document.getElementById('breakEvenMonths').textContent = 'Never (negative profit)';
+  }
+}
+
+function openPitchDeck() {
+  document.getElementById('modalTitle').textContent = 'Pitch Deck Creator';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="space-y-6">
+      <div class="mb-6">
+        <h4 class="text-lg font-semibold mb-4">Create Your Pitch Deck</h4>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="pitch-slide active border-2 border-blue-500 p-4 rounded-lg cursor-pointer" data-slide="1">
+            <div class="text-sm font-medium">1. Title</div>
+            <div class="text-xs text-gray-500">Company name & tagline</div>
+          </div>
+          <div class="pitch-slide border p-4 rounded-lg cursor-pointer" data-slide="2">
+            <div class="text-sm font-medium">2. Problem</div>
+            <div class="text-xs text-gray-500">What problem do you solve?</div>
+          </div>
+          <div class="pitch-slide border p-4 rounded-lg cursor-pointer" data-slide="3">
+            <div class="text-sm font-medium">3. Solution</div>
+            <div class="text-xs text-gray-500">Your unique solution</div>
+          </div>
+          <div class="pitch-slide border p-4 rounded-lg cursor-pointer" data-slide="4">
+            <div class="text-sm font-medium">4. Market</div>
+            <div class="text-xs text-gray-500">Target audience</div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="slideContent" class="min-h-[300px] border rounded-lg p-6">
+        <div class="slide-editor" data-slide="1">
+          <h4 class="font-semibold mb-4">Title Slide</h4>
+          <input type="text" placeholder="Company Name" class="w-full p-3 border rounded-lg mb-3">
+          <input type="text" placeholder="Tagline/One-liner" class="w-full p-3 border rounded-lg mb-3">
+          <input type="text" placeholder="Your Name" class="w-full p-3 border rounded-lg">
+        </div>
+      </div>
+      
+      <div class="flex justify-between">
+        <button onclick="closeModal()" class="px-6 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+        <button onclick="generatePitchDeck()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Generate Pitch Deck</button>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('toolModal').classList.remove('hidden');
+}
+
+function openSWOT() {
+  document.getElementById('modalTitle').textContent = 'SWOT Analysis';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-green-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-green-700 mb-3">💪 Strengths</h4>
+        <textarea class="w-full p-3 border rounded-lg" rows="6" placeholder="What are your advantages? What do you do well?"></textarea>
+      </div>
+      <div class="bg-red-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-red-700 mb-3">⚠️ Weaknesses</h4>
+        <textarea class="w-full p-3 border rounded-lg" rows="6" placeholder="What could you improve? What are your limitations?"></textarea>
+      </div>
+      <div class="bg-blue-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-blue-700 mb-3">🚀 Opportunities</h4>
+        <textarea class="w-full p-3 border rounded-lg" rows="6" placeholder="What trends could benefit you? What markets could you enter?"></textarea>
+      </div>
+      <div class="bg-yellow-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-yellow-700 mb-3">⚡ Threats</h4>
+        <textarea class="w-full p-3 border rounded-lg" rows="6" placeholder="What could harm your business? What are your competitors doing?"></textarea>
+      </div>
+    </div>
+    <div class="mt-6 flex justify-end space-x-4">
+      <button onclick="closeModal()" class="px-6 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+      <button onclick="generateSWOTReport()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Generate Analysis</button>
+    </div>
+  `;
+  document.getElementById('toolModal').classList.remove('hidden');
+}
+
+function openMarketResearch() {
+  document.getElementById('modalTitle').textContent = 'Market Research Tool';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-medium mb-2">Target Market</label>
+          <input type="text" class="w-full p-3 border rounded-lg" placeholder="e.g., High school students">
+        </div>
+        <div>
+          <label class="block font-medium mb-2">Geographic Focus</label>
+          <input type="text" class="w-full p-3 border rounded-lg" placeholder="e.g., United States">
+        </div>
+      </div>
+      
+      <div>
+        <label class="block font-medium mb-2">Market Size Estimation</label>
+        <div class="grid grid-cols-3 gap-4">
+          <input type="number" placeholder="Total addressable market" class="p-3 border rounded-lg">
+          <input type="number" placeholder="Serviceable market" class="p-3 border rounded-lg">
+          <input type="number" placeholder="Obtainable market" class="p-3 border rounded-lg">
+        </div>
+      </div>
+      
+      <div>
+        <label class="block font-medium mb-2">Competitor Analysis</label>
+        <div class="space-y-3">
+          <input type="text" placeholder="Competitor 1" class="w-full p-3 border rounded-lg">
+          <input type="text" placeholder="Competitor 2" class="w-full p-3 border rounded-lg">
+          <input type="text" placeholder="Competitor 3" class="w-full p-3 border rounded-lg">
+        </div>
+      </div>
+      
+      <div>
+        <label class="block font-medium mb-2">Customer Personas</label>
+        <textarea class="w-full p-3 border rounded-lg" rows="4" placeholder="Describe your ideal customers..."></textarea>
+      </div>
+    </div>
+    <div class="mt-6 flex justify-end space-x-4">
+      <button onclick="closeModal()" class="px-6 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+      <button onclick="generateMarketReport()" class="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">Generate Report</button>
+    </div>
+  `;
+  document.getElementById('toolModal').classList.remove('hidden');
+}
+
+function openLogoMaker() {
+  document.getElementById('modalTitle').textContent = 'Logo Maker';
+  document.getElementById('modalContent').innerHTML = `
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h4 class="font-semibold mb-4">Design Options</h4>
+        <div class="space-y-4">
+          <div>
+            <label class="block font-medium mb-2">Company Name</label>
+            <input type="text" id="logoCompanyName" class="w-full p-3 border rounded-lg" placeholder="Enter your company name">
+          </div>
+          <div>
+            <label class="block font-medium mb-2">Industry</label>
+            <select id="logoIndustry" class="w-full p-3 border rounded-lg">
+              <option>Technology</option>
+              <option>Education</option>
+              <option>Health</option>
+              <option>Environment</option>
+              <option>Arts</option>
+              <option>Sports</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium mb-2">Color Scheme</label>
+            <div class="grid grid-cols-3 gap-2">
+              <div class="color-option w-full h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded cursor-pointer" data-colors="blue"></div>
+              <div class="color-option w-full h-12 bg-gradient-to-r from-green-400 to-green-600 rounded cursor-pointer" data-colors="green"></div>
+              <div class="color-option w-full h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded cursor-pointer" data-colors="purple"></div>
+              <div class="color-option w-full h-12 bg-gradient-to-r from-red-400 to-red-600 rounded cursor-pointer" data-colors="red"></div>
+              <div class="color-option w-full h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded cursor-pointer" data-colors="orange"></div>
+              <div class="color-option w-full h-12 bg-gradient-to-r from-gray-400 to-gray-600 rounded cursor-pointer" data-colors="gray"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="font-semibold mb-4">Logo Preview</h4>
+        <div class="canvas-container bg-white rounded-lg">
+          <div id="logoPreview" class="text-4xl font-bold text-gray-800">
+            <i class="fas fa-lightbulb text-blue-600 mr-2"></i>
+            Company
+          </div>
+        </div>
+        <div class="mt-4 flex justify-end space-x-4">
+          <button onclick="closeModal()" class="px-6 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+          <button onclick="generateLogo()" class="px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700">Generate Logo</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('toolModal').classList.remove('hidden');
+  
+  // Add event listeners
+  setTimeout(() => {
+    document.getElementById('logoCompanyName').addEventListener('input', updateLogoPreview);
+    document.querySelectorAll('.color-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.color-option').forEach(o => o.classList.remove('ring-4', 'ring-offset-2', 'ring-blue-500'));
+        this.classList.add('ring-4', 'ring-offset-2', 'ring-blue-500');
+        updateLogoPreview();
+      });
+    });
+  }, 100);
+}
+
+function updateLogoPreview() {
+  const companyName = document.getElementById('logoCompanyName').value || 'Company';
+  const selectedColor = document.querySelector('.color-option.ring-4')?.dataset.colors || 'blue';
+  const logoPreview = document.getElementById('logoPreview');
+  
+  logoPreview.innerHTML = `<i class="fas fa-lightbulb text-${selectedColor}-600 mr-2"></i>${companyName}`;
+}
+
+function closeModal() {
+  document.getElementById('toolModal').classList.add('hidden');
+}
+
+// Learning System
+function openCourse(courseType) {
+  // This would open a detailed course interface
+  showNotification(`Opening ${courseType} course...`, 'info');
+}
+
+// Quiz System
+function initializeQuiz() {
+  document.querySelectorAll('.quiz-option').forEach(option => {
+    option.addEventListener('click', function() {
+      const isCorrect = this.dataset.answer === 'correct';
+      const allOptions = this.parentElement.querySelectorAll('.quiz-option');
+      const result = this.parentElement.parentElement.querySelector('.quiz-result');
+      
+      allOptions.forEach(opt => {
+        opt.classList.remove('quiz-correct', 'quiz-incorrect');
+        if (opt.dataset.answer === 'correct') {
+          opt.classList.add('quiz-correct');
+        } else if (opt === this && !isCorrect) {
+          opt.classList.add('quiz-incorrect');
+        }
+      });
+      
+      result.classList.remove('hidden');
+      
+      if (isCorrect && currentUser) {
+        currentUser.points = (currentUser.points || 0) + 5;
+        userProgress.passedQuizzes++;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        localStorage.setItem('userProgress', JSON.stringify(userProgress));
+        updateStats();
+      }
+    });
+  });
+}
+
+// Competition System
+function updateCompetitionLeaderboard() {
+  const leaderboard = document.getElementById('competitionLeaderboard');
+  if (!leaderboard) return;
+  
+  const participants = [
+    {name: 'Sarah Chen', points: 250, badge: 'gold'},
+    {name: 'Marcus Johnson', points: 220, badge: 'silver'},
+    {name: 'Elena Rodriguez', points: 195, badge: 'bronze'},
+    {name: 'David Kim', points: 180, badge: ''},
+    {name: 'Aisha Patel', points: 165, badge: ''}
+  ];
+  
+  leaderboard.innerHTML = participants.map((participant, index) => `
+    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+      <div class="flex items-center">
+        <div class="
+          <div class="text-lg font-bold">${index + 1}.</div>
+          <div>${participant.name}</div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="font-bold">${participant.points}</span>
+          ${participant.badge
+            ? `<span class="badge badge-${participant.badge}">${participant.badge
+                .charAt(0)
+                .toUpperCase()}${participant.badge.slice(1)}</span>`
+            : ''}
+        </div>
+      </div>
+    `).join('');
+}
+
+/* ---------- Home leaderboard preview ---------- */
+function updateLeaderboardPreview() {
+  const container = document.getElementById('leaderboardPreview');
+  const ranked = Object.values(users)
+    .sort((a, b) => (b.points || 0) - (a.points || 0))
+    .slice(0, 5);
+
+  container.innerHTML = ranked.length
+    ? ranked
+        .map(
+          u => `
+    <div class="flex justify-between bg-gray-50 p-3 rounded-lg">
+      <div>${u.name}</div>
+      <div class="font-bold text-blue-600">${u.points || 0} pts</div>
+    </div>`
+        )
+        .join('')
+    : '<div class="text-gray-500">Leaderboard will appear once users earn points.</div>';
+}
+
+/* ---------- Global stats & analytics ---------- */
+function updateStats() {
+  const totalVotes = ideas.reduce((sum, i) => sum + (i.votes || 0), 0);
+  const totalComments = Object.values(comments).reduce(
+    (sum, list) => sum + list.length,
+    0
+  );
+  const activeUsers = Object.keys(users).length || 1;
+
+  // Home cards
+  document.getElementById('totalIdeas').textContent = ideas.length;
+  document.getElementById('totalUsers').textContent = activeUsers;
+  document.getElementById('totalVotes').textContent = totalVotes;
+  document.getElementById('totalComments').textContent = totalComments;
+
+  // Analytics cards
+  document.getElementById('analyticsIdeas').textContent = ideas.length;
+  document.getElementById('analyticsUsers').textContent = activeUsers;
+  document.getElementById('analyticsEngagement').textContent =
+    totalVotes + totalComments;
+  document.getElementById('analyticsSuccess').textContent = currentUser
+    ? currentUser.badges.length
+    : 0;
+
+  // Category chart
+  const catChart = document.getElementById('categoryChart');
+  catChart.innerHTML = '';
+  const categories = {};
+  ideas.forEach(i => (categories[i.category] = (categories[i.category] || 0) + 1));
+  Object.entries(categories).forEach(
+    ([cat, count]) =>
+      (catChart.innerHTML += `<div class="flex justify-between"><span>${cat}</span><span>${count}</span></div>`)
+  );
+
+  // Stage chart
+  const stageChart = document.getElementById('stageChart');
+  stageChart.innerHTML = '';
+  const stages = {};
+  ideas.forEach(i => (stages[i.stage] = (stages[i.stage] || 0) + 1));
+  Object.entries(stages).forEach(
+    ([st, count]) =>
+      (stageChart.innerHTML += `<div class="flex justify-between"><span>${st}</span><span>${count}</span></div>`)
+  );
+}
+
+/* ---------- Filters ---------- */
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('categoryFilter').value;
+  const stage = document.getElementById('stageFilter').value;
+  const sort = document.getElementById('sortFilter').value;
+
+  let filtered = ideas.filter(
+    i =>
+      (i.title.toLowerCase().includes(q) ||
+        i.name.toLowerCase().includes(q) ||
+        (i.tags || []).some(t => t.toLowerCase().includes(q))) &&
+      (cat === '' || i.category === cat) &&
+      (stage === '' || i.stage === stage)
+  );
+
+  switch (sort) {
+    case 'votes':
+      filtered.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+      break;
+    case 'comments':
+      filtered.sort(
+        (a, b) => (comments[b.id] || []).length - (comments[a.id] || []).length
+      );
+      break;
+    case 'newest':
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      break;
+    case 'oldest':
+      filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      break;
+  }
+  displayIdeas(filtered);
+}
+
+/* ---------- Featured ideas carousel ---------- */
+function displayFeaturedIdeas() {
+  const container = document.getElementById('featuredIdeas');
+  container.innerHTML = '';
+  const topIdeas = [...ideas]
+    .sort((a, b) => (b.votes || 0) - (a.votes || 0))
+    .slice(0, 5);
+
+  container.innerHTML = topIdeas.length
+    ? topIdeas
+        .map(
+          idea => `
+    <div class="bg-white rounded-xl shadow-lg p-4 min-w-[250px]">
+      <h4 class="font-semibold mb-1">${idea.title}</h4>
+      <p class="text-sm text-gray-600 mb-1">By ${idea.name}</p>
+      <p class="text-xs text-gray-500 mb-2">${idea.category} • ${idea.stage}</p>
+      <div class="font-bold text-blue-600">Votes: ${idea.votes || 0}</div>
+    </div>`
+        )
+        .join('')
+    : '<div class="text-gray-500">No featured ideas yet.</div>';
+}
+
+/* ---------- Navigation ---------- */
+function showSection(id) {
+  document
+    .querySelectorAll('main > section')
+    .forEach(sec => sec.classList.add('hidden'));
+  const target = document.getElementById(id);
+  if (target) target.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (id === 'ideas') {
+    displayIdeas();
+    displayFeaturedIdeas();
+  }
+  if (id === 'profile') updateUserProfile();
+}
+
+/* ---------- Multi-step form buttons ---------- */
+document.getElementById('nextStep').addEventListener('click', nextStep);
+document.getElementById('prevStep').addEventListener('click', prevStep);
+
+/* ---------- Idea submission ---------- */
+document.getElementById('ideaForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  const colors = ['green', 'blue', 'orange', 'purple', 'red'];
+  const newIdea = {
+    id: Date.now(),
+    name: document.getElementById('name').value,
+    title: document.getElementById('title').value,
+    description: document.getElementById('description').value,
+    problem: document.getElementById('problem').value,
+    solution: document.getElementById('solution').value,
+    target: document.getElementById('target').value,
+    category: document.getElementById('category').value,
+    stage: document.getElementById('stage').value,
+    tags: document
+      .getElementById('tags')
+      .value.split(',')
+      .map(t => t.trim())
+      .filter(Boolean),
+    color: colors[Math.floor(Math.random() * colors.length)],
+    votes: 0,
+    comments: [],
+    images: Array.from(document.getElementById('ideaImages').files).map(f =>
+      URL.createObjectURL(f)
+    ),
+    video: recordedVideo ? URL.createObjectURL(recordedVideo) : null,
+    createdAt: new Date().toISOString()
+  };
+
+  ideas.push(newIdea);
+  localStorage.setItem('kidpreneurIdeas', JSON.stringify(ideas));
+
+  // User points
+  if (currentUser) {
+    currentUser.ideasSubmitted = (currentUser.ideasSubmitted || 0) + 1;
+    currentUser.points = (currentUser.points || 0) + 10;
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }
+
+  // Reset form & UI
+  e.target.reset();
+  recordedVideo = null;
+  document.getElementById('videoPreview').style.display = 'none';
+  document.getElementById('imagePreview').innerHTML = '';
+  currentStep = 1;
+  document
+    .querySelectorAll('.form-step')
+    .forEach(s => s.classList.remove('active'));
+  document.querySelector('.form-step[data-step="1"]').classList.add('active');
+  initializeFormSteps();
+
+  showNotification('🎉 Your idea has been submitted!', 'success');
+  updateStats();
+  displayIdeas();
+  displayFeaturedIdeas();
+  showSection('ideas');
+});
+
+/* ---------- Profile save ---------- */
+document.getElementById('profileForm').addEventListener('submit', e => {
+  e.preventDefault();
+  currentUser.name = document.getElementById('userFullName').value;
+  currentUser.age = document.getElementById('userAge').value;
+  currentUser.school = document.getElementById('userSchool').value;
+  currentUser.location = document.getElementById('userLocation').value;
+  currentUser.bio = document.getElementById('userBio').value;
+  currentUser.interests = Array.from(
+    document.querySelectorAll('.interest-checkbox:checked')
+  ).map(cb => cb.value);
+
+  users[currentUser.id] = currentUser;
+  localStorage.setItem('kidpreneurUsers', JSON.stringify(users));
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+  showNotification('Profile saved!', 'success');
+  updateUserProfile();
+  updateLeaderboardPreview();
+  updateStats();
+});
+
+/* ---------- Filter listeners ---------- */
+['searchInput', 'categoryFilter', 'stageFilter', 'sortFilter'].forEach(id =>
+  document.getElementById(id).addEventListener('input', applyFilters)
+);
+
+/* ---------- Initialization ---------- */
+initializeUser();
+initializeMediaHandling();
+initializeFormSteps();
+initializeQuiz();
+displayIdeas();
+displayFeaturedIdeas();
+updateStats();
+updateLeaderboardPreview();
+updateCompetitionLeaderboard();
+applyFilters();
+</script>
+</body>
+</html>
