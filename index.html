@@ -12,7 +12,8 @@
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
-.idea-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(350px,1fr)); gap: 2rem; }
+.idea-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 2rem; }
+@media (max-width: 640px){ .idea-grid { grid-template-columns: 1fr; gap: 1rem; } }
 .logo-placeholder { width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border-radius: 8px; }
 .dark { background-color: #1a202c; color: #e2e8f0; }
 .dark .bg-white { background-color: #2d3748 !important; }
@@ -35,30 +36,124 @@
 .draggable { cursor: move; }
 .drop-zone { min-height: 60px; border: 2px dashed #d1d5db; display: flex; align-items: center; justify-content: center; }
 .drop-zone.drag-over { background: #f0f9ff; border-color: #3b82f6; }
+
+/* Enhanced submission page styles */
+.submission-container { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+.submission-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,0 1000,300 1000,1000 0,700"/><polygon fill="rgba(255,255,255,0.03)" points="0,200 1000,0 1000,600 0,800"/></svg>');
+  pointer-events: none;
+}
+.form-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.step-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
+/* --- Simple, mobile-first submission progress bar --- */
+.simple-progress { position: relative; height: 8px; background: #e5e7eb; border-radius: 9999px; overflow: hidden; }
+.simple-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width 300ms ease; }
+.step-dot { width: 32px; height: 32px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; }
+.step-dot.active { background: #3b82f6; color: #fff; }
+.step-dot.inactive { background: #d1d5db; color: #fff; }
+.step-label { font-size: 0.75rem; color: #6b7280; }
+@media (max-width: 640px){
+  .submission-container h1 { font-size: 1.875rem; } /* ~text-3xl */
+  .submission-container p { font-size: 0.95rem; }
+}
+
+
+/* --- Mobile Navbar --- */
+.mobile-menu { display: none; flex-direction: column; background: white; }
+.mobile-menu.show { display: flex; }
+@media (min-width: 768px){
+  .mobile-menu { display: none !important; }
+}
+
+
+/* --- Navbar active link + hamburger animation --- */
+.nav-link.active { color: #2563eb; font-weight: 600; border-bottom: 2px solid #2563eb; }
+#menuToggle.open i::before { content: "00d"; } /* FontAwesome X icon */
+
+
+/* --- Progress checkmark when completed --- */
+.step-dot.completed { background: #16a34a; color: #fff; }
+
 </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
 
 <!-- Navigation -->
+
 <nav class="bg-white shadow-lg sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
     <div class="flex items-center">
       <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-2"></i>
       <span class="text-xl font-bold text-gray-800">Kidpreneur</span>
     </div>
+    <!-- Desktop Menu -->
     <div class="hidden md:flex items-center space-x-4">
-      <button onclick="showSection('home')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</button>
-      <button onclick="showSection('profile')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Profile</button>
-      <button onclick="showSection('submit')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Submit Idea</button>
-      <button onclick="showSection('ideas')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Showcase</button>
-      <button onclick="showSection('business-tools')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Tools</button>
-      <button onclick="showSection('learning')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Learning</button>
-      <button onclick="showSection('competitions')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Competitions</button>
-      <button onclick="showSection('analytics')" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Analytics</button>
+      <button onclick="showSection('home')" class="nav-link" data-target="home" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</button>
+      <button onclick="showSection('profile')" class="nav-link" data-target="profile" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Profile</button>
+      <button onclick="showSection('submit')" class="nav-link" data-target="submit" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Submit Idea</button>
+      <button onclick="showSection('ideas')" class="nav-link" data-target="ideas" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Showcase</button>
+      <button onclick="showSection('business-tools')" class="nav-link" data-target="business-tools" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Tools</button>
+      <button onclick="showSection('learning')" class="nav-link" data-target="learning" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Learning</button>
+      <button onclick="showSection('competitions')" class="nav-link" data-target="competitions" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Competitions</button>
+      <button onclick="showSection('analytics')" class="nav-link" data-target="analytics" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Analytics</button>
       <button id="darkModeToggle" class="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300">Dark Mode</button>
     </div>
+    <!-- Mobile Hamburger -->
+    <div class="md:hidden flex items-center">
+      <button id="menuToggle" class="text-gray-600 hover:text-blue-600 focus:outline-none">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu px-4 py-2 space-y-2">
+    <button onclick="showSection('home')" class="nav-link" data-target="home" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Home</button>
+    <button onclick="showSection('profile')" class="nav-link" data-target="profile" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Profile</button>
+    <button onclick="showSection('submit')" class="nav-link" data-target="submit" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Submit Idea</button>
+    <button onclick="showSection('ideas')" class="nav-link" data-target="ideas" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Showcase</button>
+    <button onclick="showSection('business-tools')" class="nav-link" data-target="business-tools" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Tools</button>
+    <button onclick="showSection('learning')" class="nav-link" data-target="learning" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Learning</button>
+    <button onclick="showSection('competitions')" class="nav-link" data-target="competitions" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Competitions</button>
+    <button onclick="showSection('analytics')" class="nav-link" data-target="analytics" class="text-left text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Analytics</button>
+    <button id="darkModeToggleMobile" class="w-full text-left px-3 py-2 rounded bg-gray-200 hover:bg-gray-300">Dark Mode</button>
   </div>
 </nav>
+
 
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -90,6 +185,7 @@
         </div>
       </div>
 
+      <!-- Feature Cards -->
       <div class="grid md:grid-cols-3 gap-8 mt-16">
         <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -121,7 +217,7 @@
       </div>
 
       <div class="mt-12">
-        <button onclick="showSection('submit')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors transform hover:scale-105">
+        <button onclick="showSection('submit')" class="nav-link" data-target="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors transform hover:scale-105">
           Share Your Idea Now
         </button>
       </div>
@@ -212,152 +308,252 @@
 
   <!-- Enhanced Submit Idea Section -->
   <section id="submit" class="fade-in hidden">
-    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
-      <div class="text-center mb-8">
-        <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-lightbulb text-3xl text-yellow-600"></i>
-        </div>
-        <h2 class="text-3xl font-bold text-gray-800">Submit Your Brilliant Idea</h2>
-      </div>
-      
-      <!-- Multi-step form -->
-      <div class="mb-8">
-        <div class="flex justify-between items-center">
-          <div class="step-indicator active" data-step="1">
-            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">1</div>
-            <div class="text-xs mt-1">Basic Info</div>
+    <div class="submission-container min-h-screen py-12">
+      <div class="max-w-5xl mx-auto">
+        <!-- Hero Section -->
+        <div class="text-center mb-12 relative z-10">
+          <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-6 step-glow">
+            <i class="fas fa-rocket text-4xl text-white"></i>
           </div>
-          <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div></div>
-          <div class="step-indicator" data-step="2">
-            <div class="w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold">2</div>
-            <div class="text-xs mt-1">Details</div>
-          </div>
-          <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div></div>
-          <div class="step-indicator" data-step="3">
-            <div class="w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold">3</div>
-            <div class="text-xs mt-1">Media</div>
-          </div>
-          <div class="flex-1 h-1 bg-gray-200 mx-2"><div class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div></div>
-          <div class="step-indicator" data-step="4">
-            <div class="w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold">4</div>
-            <div class="text-xs mt-1">Review</div>
-          </div>
-        </div>
-      </div>
-
-      <form id="ideaForm" class="space-y-6">
-        <!-- Step 1: Basic Information -->
-        <div class="form-step active" data-step="1">
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
-              <input type="text" id="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-            <div>
-              <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Idea Title</label>
-              <input type="text" id="title" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-            <div>
-              <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-              <select id="category" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <option value="">Select a Category</option>
-                <option value="Technology">Technology</option>
-                <option value="Environment">Environment</option>
-                <option value="Health">Health</option>
-                <option value="Education">Education</option>
-                <option value="Arts & Creativity">Arts & Creativity</option>
-                <option value="Sports & Fitness">Sports & Fitness</option>
-                <option value="Social Impact">Social Impact</option>
-                <option value="Gaming & Entertainment">Gaming & Entertainment</option>
-              </select>
-            </div>
-            <div>
-              <label for="stage" class="block text-sm font-medium text-gray-700 mb-2">Development Stage</label>
-              <select id="stage" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <option value="">Select Stage</option>
-                <option value="Concept">Just an Idea</option>
-                <option value="Research">Researching</option>
-                <option value="Prototype">Building Prototype</option>
-                <option value="Testing">Testing with Users</option>
-                <option value="Launch">Ready to Launch</option>
-              </select>
-            </div>
-          </div>
+          <h1 class="text-5xl font-bold text-white mb-4">Transform Your Vision</h1>
+          <p class="text-xl text-white/90 max-w-2xl mx-auto">
+            Ready to change the world? Share your brilliant idea with our community of young innovators and take the first step toward building something extraordinary.
+          </p>
         </div>
 
-        <!-- Step 2: Detailed Information -->
-        <div class="form-step" data-step="2">
-          <div class="space-y-6">
-            <div>
-              <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Idea Description</label>
-              <textarea id="description" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe your idea in detail..."></textarea>
-            </div>
-            <div>
-              <label for="problem" class="block text-sm font-medium text-gray-700 mb-2">What problem does this solve?</label>
-              <textarea id="problem" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Explain the problem your idea addresses..."></textarea>
-            </div>
-            <div>
-              <label for="solution" class="block text-sm font-medium text-gray-700 mb-2">Your Solution</label>
-              <textarea id="solution" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="How does your idea solve this problem?"></textarea>
-            </div>
-            <div>
-              <label for="target" class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
-              <input type="text" id="target" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Who would use your product/service?">
-            </div>
+        <!-- Main Form Container -->
+        <div class="form-glass rounded-3xl p-8 shadow-2xl relative z-10">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Submit Your Brilliant Idea</h2>
+            <p class="text-gray-600">Follow our guided process to showcase your innovation</p>
           </div>
-        </div>
-
-        <!-- Step 3: Media & Visuals -->
-        <div class="form-step" data-step="3">
-          <div class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Upload Images (Optional)</label>
-              <input type="file" id="ideaImages" multiple accept="image/*" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+          
+          
+          <!-- Enhanced Progress Indicator (simplified & mobile-first) -->
+          <div class="mb-8 space-y-4">
+            <div class="simple-progress">
+              <div id="progressFill" class="simple-progress-fill" style="width: 25%"></div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Record Pitch Video (Optional)</label>
-              <div class="space-y-4">
-                <div class="flex space-x-4">
-                  <button type="button" id="startRecording" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                    <i class="fas fa-video mr-2"></i>Start Recording
-                  </button>
-                  <button type="button" id="stopRecording" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg" disabled>
-                    <i class="fas fa-stop mr-2"></i>Stop Recording
-                  </button>
-                </div>
-                <video id="videoPreview" class="w-full max-w-md rounded-lg" controls style="display:none;"></video>
+            <div class="grid grid-cols-4 gap-2 text-center">
+              <div class="flex flex-col items-center">
+                <div class="step-dot active" data-step="1">1</div>
+                <div class="step-label">Basic</div>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="step-dot inactive" data-step="2">2</div>
+                <div class="step-label">Details</div>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="step-dot inactive" data-step="3">3</div>
+                <div class="step-label">Media</div>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="step-dot inactive" data-step="4">4</div>
+                <div class="step-label">Review</div>
               </div>
             </div>
-            <div>
-              <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
-              <input type="text" id="tags" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="innovation, technology, youth...">
+          </div>
+
+          <form id="ideaForm" class="space-y-8">
+            <!-- Step 1: Basic Information -->
+            <div class="form-step active bg-white rounded-2xl p-8 shadow-lg" data-step="1">
+              <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                  <i class="fas fa-user text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800">Let's start with the basics</h3>
+                  <p class="text-gray-600">Tell us who you are and what your idea is about</p>
+                </div>
+              </div>
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="name" class="block text-sm font-medium text-gray-700">Your Name *</label>
+                  <input type="text" id="name" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                  <p class="text-xs text-gray-500">This will be displayed with your idea</p>
+                </div>
+                <div class="space-y-2">
+                  <label for="title" class="block text-sm font-medium text-gray-700">Idea Title *</label>
+                  <input type="text" id="title" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                  <p class="text-xs text-gray-500">Make it catchy and memorable</p>
+                </div>
+                <div class="space-y-2">
+                  <label for="category" class="block text-sm font-medium text-gray-700">Category *</label>
+                  <select id="category" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    <option value="">Choose your field</option>
+                    <option value="Technology">💻 Technology</option>
+                    <option value="Environment">🌱 Environment</option>
+                    <option value="Health">🏥 Health</option>
+                    <option value="Education">📚 Education</option>
+                    <option value="Arts & Creativity">🎨 Arts & Creativity</option>
+                    <option value="Sports & Fitness">⚽ Sports & Fitness</option>
+                    <option value="Social Impact">🤝 Social Impact</option>
+                    <option value="Gaming & Entertainment">🎮 Gaming & Entertainment</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="stage" class="block text-sm font-medium text-gray-700">Development Stage *</label>
+                  <select id="stage" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    <option value="">Where are you now?</option>
+                    <option value="Concept">💡 Just an Idea</option>
+                    <option value="Research">🔍 Researching</option>
+                    <option value="Prototype">🔧 Building Prototype</option>
+                    <option value="Testing">🧪 Testing with Users</option>
+                    <option value="Launch">🚀 Ready to Launch</option>
+                  </select>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Step 4: Review -->
-        <div class="form-step" data-step="4">
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Review Your Submission</h3>
-            <div id="submissionPreview" class="space-y-4"></div>
-          </div>
-        </div>
+            <!-- Step 2: Detailed Information -->
+            <div class="form-step bg-white rounded-2xl p-8 shadow-lg hidden" data-step="2">
+              <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                  <i class="fas fa-lightbulb text-green-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800">Tell us more about your idea</h3>
+                  <p class="text-gray-600">The more details you provide, the better feedback you'll receive</p>
+                </div>
+              </div>
+              
+              <div class="space-y-6">
+                <div class="space-y-2">
+                  <label for="description" class="block text-sm font-medium text-gray-700">Idea Description *</label>
+                  <textarea id="description" rows="4" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Paint a clear picture of your innovation. What exactly are you building or proposing?"></textarea>
+                  <p class="text-xs text-gray-500">Aim for 2-3 sentences that clearly explain your concept</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label for="problem" class="block text-sm font-medium text-gray-700">What problem does this solve?</label>
+                    <textarea id="problem" rows="3" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Every great idea solves a real problem. What's yours?"></textarea>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="solution" class="block text-sm font-medium text-gray-700">Your Solution</label>
+                    <textarea id="solution" rows="3" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="How does your idea uniquely solve this problem?"></textarea>
+                  </div>
+                </div>
+                
+                <div class="space-y-2">
+                  <label for="target" class="block text-sm font-medium text-gray-700">Target Audience</label>
+                  <input type="text" id="target" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Who would benefit most from your solution?">
+                  <p class="text-xs text-gray-500">e.g., "High school students", "Small business owners", "Environmental activists"</p>
+                </div>
+              </div>
+            </div>
 
-        <!-- Navigation Buttons -->
-        <div class="flex justify-between mt-8">
-          <button type="button" id="prevStep" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg" style="display:none;">Previous</button>
-          <button type="button" id="nextStep" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">Next</button>
-          <button type="submit" id="submitIdea" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg" style="display:none;">Submit Idea</button>
-        </div>
+            <!-- Step 3: Media & Visuals -->
+            <div class="form-step bg-white rounded-2xl p-8 shadow-lg hidden" data-step="3">
+              <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                  <i class="fas fa-camera text-purple-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800">Bring your idea to life</h3>
+                  <p class="text-gray-600">Visual content helps others understand and connect with your vision</p>
+                </div>
+              </div>
+              
+              <div class="space-y-8">
+                <div class="bg-gray-50 rounded-xl p-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-4">Upload Images (Optional)</label>
+                  <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 transition-colors">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <input type="file" id="ideaImages" multiple accept="image/*" class="hidden">
+                    <label for="ideaImages" class="cursor-pointer">
+                      <span class="text-blue-600 hover:text-blue-700 font-medium">Click to upload</span> or drag and drop
+                      <p class="text-sm text-gray-500 mt-1">PNG, JPG, GIF up to 10MB each</p>
+                    </label>
+                  </div>
+                  <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-4">Record Pitch Video (Optional)</label>
+                  <div class="space-y-4">
+                    <div class="flex space-x-4">
+                      <button type="button" id="startRecording" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-medium transition-all">
+                        <i class="fas fa-video mr-2"></i>Start Recording
+                      </button>
+                      <button type="button" id="stopRecording" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl font-medium transition-all" disabled>
+                        <i class="fas fa-stop mr-2"></i>Stop Recording
+                      </button>
+                    </div>
+                    <video id="videoPreview" class="w-full max-w-md mx-auto rounded-xl shadow-lg" controls style="display:none;"></video>
+                    <p class="text-sm text-gray-500 text-center">💡 Tip: Keep it under 2 minutes and speak clearly about your idea</p>
+                  </div>
+                </div>
+                
+                <div class="space-y-2">
+                  <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+                  <input type="text" id="tags" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="innovation, technology, youth, sustainability...">
+                  <p class="text-xs text-gray-500">Separate tags with commas to help others discover your idea</p>
+                </div>
+              </div>
+            </div>
 
-        <div class="mt-6">
-          <div class="flex items-center">
-            <input type="checkbox" id="agree" required class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-            <label for="agree" class="ml-2 text-sm text-gray-600">I agree to share my idea with the Kidpreneur community</label>
-          </div>
+            <!-- Step 4: Review -->
+            <div class="form-step bg-white rounded-2xl p-8 shadow-lg hidden" data-step="4">
+              <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                  <i class="fas fa-check-circle text-orange-600 text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800">Ready to launch?</h3>
+                  <p class="text-gray-600">Review your submission before sharing it with the world</p>
+                </div>
+              </div>
+              
+              <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Submission Preview</h4>
+                <div id="submissionPreview" class="space-y-4"></div>
+              </div>
+              
+              <div class="mt-8 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+                <div class="flex items-start">
+                  <i class="fas fa-info-circle text-yellow-600 mt-1 mr-3"></i>
+                  <div class="text-sm">
+                    <p class="font-medium text-yellow-800 mb-1">Before you submit:</p>
+                    <ul class="text-yellow-700 space-y-1">
+                      <li>• Make sure all information is accurate</li>
+                      <li>• Check your spelling and grammar</li>
+                      <li>• Ensure your idea is clearly explained</li>
+                      <li>• Remember: you can always update your submission later</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+              <button type="button" id="prevStep" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-8 rounded-xl transition-all" style="display:none;">
+                <i class="fas fa-arrow-left mr-2"></i>Previous
+              </button>
+              <div class="flex space-x-4">
+                <button type="button" id="nextStep" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl transition-all transform hover:scale-105">
+                  Next <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button type="submit" id="submitIdea" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-8 rounded-xl transition-all transform hover:scale-105" style="display:none;">
+                  <i class="fas fa-rocket mr-2"></i>Submit Idea
+                </button>
+              </div>
+            </div>
+
+            <!-- Agreement Checkbox -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+              <div class="flex items-start">
+                <input type="checkbox" id="agree" required class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5 mr-3">
+                <label for="agree" class="text-sm text-gray-600">
+                  <span class="font-medium">I agree to share my idea</span> with the Kidpreneur community and understand that it will be publicly visible. I confirm that this is my original work.
+                </label>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   </section>
 
@@ -534,38 +730,293 @@
       </div>
     </div>
 
-    <!-- Course Categories -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-      <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer" onclick="openCourse('ideation')">
-        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-lightbulb text-2xl text-yellow-600"></i>
+    <!-- Course Categories with Videos -->
+    <div class="space-y-12">
+      
+      <!-- Ideation & Brainstorming -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-lightbulb text-2xl text-yellow-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Ideation & Brainstorming</h3>
+            <p class="text-gray-600">Learn to generate and refine innovative ideas</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Interactive Content</div>
+          </div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Ideation & Brainstorming</h3>
-        <p class="text-gray-600 mb-4">Learn to generate and refine innovative ideas</p>
-        <div class="text-sm text-blue-600">4 Lessons • 2 Quizzes</div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/yAidvTKX6xM" title="Six Creative Ways To Brainstorm Ideas" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/YXZamW4-Ysk" title="Brainstorming Techniques" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/GLpZ6RZHyoM" title="Creative Thinking Methods" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/2bNvs_qElIw" title="Innovation Process" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
       </div>
 
-      <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer" onclick="openCourse('business')">
-        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-chart-bar text-2xl text-blue-600"></i>
+      <!-- Business Fundamentals -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-chart-bar text-2xl text-blue-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Business Fundamentals</h3>
+            <p class="text-gray-600">Master the basics of starting a business</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Core Concepts</div>
+          </div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Business Fundamentals</h3>
-        <p class="text-gray-600 mb-4">Master the basics of starting a business</p>
-        <div class="text-sm text-blue-600">6 Lessons • 3 Quizzes</div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/9VlvbpXwLJs" title="Business Basics" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/eMHf_aV9U1U" title="Starting a Business" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/yYX4bvQSqbo" title="Business Models" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/bXLZ8I7s8tw" title="Business Planning" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
       </div>
 
-      <div class="bg-white rounded-xl p-6 shadow-lg card-hover cursor-pointer" onclick="openCourse('marketing')">
-        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-megaphone text-2xl text-green-600"></i>
+      <!-- Web & App Development -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-code text-2xl text-purple-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Web & App Development</h3>
+            <p class="text-gray-600">Build your digital products and platforms</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Technical Skills</div>
+          </div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Marketing & Branding</h3>
-        <p class="text-gray-600 mb-4">Build your brand and reach customers</p>
-        <div class="text-sm text-blue-600">5 Lessons • 2 Quizzes</div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/7nQsQ0rvYqQ" title="Web Development Basics" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/yye7rSsiV6k" title="App Development" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/W6NZfCO5SIk" title="Programming Fundamentals" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/SqcY0GlETPk" title="Development Tools" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
       </div>
+
+      <!-- Marketing & Branding -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-megaphone text-2xl text-green-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Marketing & Branding</h3>
+            <p class="text-gray-600">Build your brand and reach customers</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Brand Building</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/QF6tPdRXFdU" title="Marketing Fundamentals" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/R5sG2V5ICYo" title="Brand Building" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/DTFfbGwYz2g" title="Digital Marketing" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/8tMm_XZA0HU" title="Content Marketing" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pitching -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-presentation text-2xl text-red-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Pitching</h3>
+            <p class="text-gray-600">Present your ideas with confidence and impact</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Presentation Skills</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/l0hVIH3EnlQ" title="Perfect Pitch" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/jYWF64Um7pw" title="Presentation Skills" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/yoD8RMq2OkU" title="Pitch Deck Creation" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/P2LwuF7zn9c" title="Investor Pitching" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Literacy -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-dollar-sign text-2xl text-teal-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Financial Literacy</h3>
+            <p class="text-gray-600">Understand money, budgets, and financial planning</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Money Management</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/ouvbeb2wSGA" title="Financial Basics" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/4XZIv4__sQA" title="Budgeting Skills" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/vJabNEwZIuc" title="Investment Basics" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/V360AygOv7A" title="Financial Planning" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Thinking -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-pencil-ruler text-2xl text-pink-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Design Thinking</h3>
+            <p class="text-gray-600">Human-centered approach to innovation and problem-solving</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Design Process</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/gHGN6hs2gZY" title="Design Thinking Basics" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/_r0VX-aU_T8" title="User-Centered Design" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/_WI3B54m6SU" title="Design Process" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/gnWj97CEjeo" title="Problem Solving" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Productivity & Time Management -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-clock text-2xl text-orange-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Productivity & Time Management</h3>
+            <p class="text-gray-600">Maximize your efficiency and manage your time effectively</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Efficiency Skills</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/W8B0KWmv_-Q" title="Time Management" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/xgp6eELYY1M" title="Productivity Tips" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/tlddeUri3GM" title="Work-Life Balance" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/iONDebHX9qk" title="Goal Setting" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Innovation & Tech Trends -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-rocket text-2xl text-indigo-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Innovation & Tech Trends</h3>
+            <p class="text-gray-600">Stay ahead with latest technology and innovation trends</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Future Tech</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/giCwx6BkqC8" title="Tech Innovation" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/KvN3JXICzdM" title="Future Technologies" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/m9qjraDsaGI" title="Digital Transformation" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/a34ZpoKP7hg" title="Tech Trends" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Stories -->
+      <div class="bg-white rounded-xl p-8 shadow-lg">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+            <i class="fas fa-trophy text-2xl text-yellow-600"></i>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-800">Success Stories</h3>
+            <p class="text-gray-600">Get inspired by real entrepreneurs and their journeys</p>
+            <div class="text-sm text-blue-600 mt-1">4 Videos • Inspiration</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/i9UYbJ2xMTI" title="Young Entrepreneur Success" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/me0_my3kIJE" title="Startup Journey" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/YV0b0nnCshs" title="Business Success Story" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/AOaImk2nHYg" title="Entrepreneur Interview" allowfullscreen loading=\"lazy\"></iframe>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Interactive Quiz Section -->
-    <div class="bg-white rounded-xl p-6 shadow-lg mb-8">
+    <div class="bg-white rounded-xl p-6 shadow-lg mb-8 mt-12">
       <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Knowledge Check</h3>
       <div id="quizContainer">
         <div class="quiz-question mb-6">
@@ -794,17 +1245,17 @@
       <div>
         <h4 class="text-lg font-semibold mb-4">Platform</h4>
         <ul class="space-y-2">
-          <li><button onclick="showSection('home')" class="text-gray-300 hover:text-white">Home</button></li>
-          <li><button onclick="showSection('submit')" class="text-gray-300 hover:text-white">Submit Idea</button></li>
-          <li><button onclick="showSection('ideas')" class="text-gray-300 hover:text-white">Showcase</button></li>
-          <li><button onclick="showSection('business-tools')" class="text-gray-300 hover:text-white">Tools</button></li>
+          <li><button onclick="showSection('home')" class="nav-link" data-target="home" class="text-gray-300 hover:text-white">Home</button></li>
+          <li><button onclick="showSection('submit')" class="nav-link" data-target="submit" class="text-gray-300 hover:text-white">Submit Idea</button></li>
+          <li><button onclick="showSection('ideas')" class="nav-link" data-target="ideas" class="text-gray-300 hover:text-white">Showcase</button></li>
+          <li><button onclick="showSection('business-tools')" class="nav-link" data-target="business-tools" class="text-gray-300 hover:text-white">Tools</button></li>
         </ul>
       </div>
       <div>
         <h4 class="text-lg font-semibold mb-4">Learning</h4>
         <ul class="space-y-2">
-          <li><button onclick="showSection('learning')" class="text-gray-300 hover:text-white">Courses</button></li>
-          <li><button onclick="showSection('competitions')" class="text-gray-300 hover:text-white">Competitions</button></li>
+          <li><button onclick="showSection('learning')" class="nav-link" data-target="learning" class="text-gray-300 hover:text-white">Courses</button></li>
+          <li><button onclick="showSection('competitions')" class="nav-link" data-target="competitions" class="text-gray-300 hover:text-white">Competitions</button></li>
           <li><a href="#" class="text-gray-300 hover:text-white">Resources</a></li>
           <li><a href="#" class="text-gray-300 hover:text-white">Mentorship</a></li>
         </ul>
@@ -964,7 +1415,7 @@ function updateStepIndicators() {
       stepDiv.className = 'w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-sm font-bold';
       stepDiv.innerHTML = '<i class="fas fa-check"></i>';
     } else if (stepNumber === currentStep) {
-      stepDiv.className = 'w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold';
+      stepDiv.className = 'w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white flex items-center justify-center text-sm font-bold step-glow';
       stepDiv.textContent = stepNumber;
     } else {
       stepDiv.className = 'w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center text-sm font-bold';
@@ -972,16 +1423,12 @@ function updateStepIndicators() {
     }
   });
 
-  // Update progress bars
-  const progressBars = document.querySelectorAll('.step-indicator + .flex-1 div');
-  progressBars.forEach((bar, index) => {
-    const progress = Math.max(0, Math.min(100, ((currentStep - 1) / (maxSteps - 1)) * 100));
-    if (index < currentStep - 1) {
-      bar.style.width = '100%';
-    } else {
-      bar.style.width = '0%';
-    }
-  });
+  // Update progress bar
+  const progressBar = document.querySelector('.submission-container .progress-bar div');
+  if (progressBar) {
+    const progress = ((currentStep - 1) / (maxSteps - 1)) * 100;
+    progressBar.style.width = `${progress}%`;
+  }
 }
 
 function updateStepButtons() {
@@ -992,9 +1439,9 @@ function updateStepButtons() {
 
 function nextStep() {
   if (currentStep < maxSteps) {
-    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('hidden');
     currentStep++;
-    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('hidden');
     updateStepIndicators();
     updateStepButtons();
     
@@ -1006,9 +1453,9 @@ function nextStep() {
 
 function prevStep() {
   if (currentStep > 1) {
-    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('active');
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('hidden');
     currentStep--;
-    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+    document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.remove('hidden');
     updateStepIndicators();
     updateStepButtons();
   }
@@ -1136,7 +1583,8 @@ function displayIdeas(filtered = ideas) {
     const ideaComments = comments[idea.id] || [];
     
     ideaCard.innerHTML = `
-      <div class="logo-placeholder ${colorClasses[idea.color] || 'bg-gray-100 text-gray-600'}">
+      <div class="logo
+-placeholder ${colorClasses[idea.color] || 'bg-gray-100 text-gray-600'}">
         <i class="fas fa-lightbulb"></i>
       </div>
       <div class="p-6">
@@ -1708,23 +2156,22 @@ function updateCompetitionLeaderboard() {
   leaderboard.innerHTML = participants.map((participant, index) => `
     <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
       <div class="flex items-center">
-        <div class="
-          <div class="text-lg font-bold">${index + 1}.</div>
-          <div>${participant.name}</div>
-        </div>
-        <div class="flex items-center space-x-2">
-          <span class="font-bold">${participant.points}</span>
-          ${participant.badge
-            ? `<span class="badge badge-${participant.badge}">${participant.badge
-                .charAt(0)
-                .toUpperCase()}${participant.badge.slice(1)}</span>`
-            : ''}
-        </div>
+        <div class="text-lg font-bold mr-4">${index + 1}.</div>
+        <div>${participant.name}</div>
       </div>
-    `).join('');
+      <div class="flex items-center space-x-2">
+        <span class="font-bold">${participant.points}</span>
+        ${participant.badge
+          ? `<span class="badge badge-${participant.badge}">${participant.badge
+              .charAt(0)
+              .toUpperCase()}${participant.badge.slice(1)}</span>`
+          : ''}
+      </div>
+    </div>
+  `).join('');
 }
 
-/* ---------- Home leaderboard preview ---------- */
+// Home leaderboard preview
 function updateLeaderboardPreview() {
   const container = document.getElementById('leaderboardPreview');
   const ranked = Object.values(users)
@@ -1744,7 +2191,7 @@ function updateLeaderboardPreview() {
     : '<div class="text-gray-500">Leaderboard will appear once users earn points.</div>';
 }
 
-/* ---------- Global stats & analytics ---------- */
+// Global stats & analytics
 function updateStats() {
   const totalVotes = ideas.reduce((sum, i) => sum + (i.votes || 0), 0);
   const totalComments = Object.values(comments).reduce(
@@ -1770,26 +2217,30 @@ function updateStats() {
 
   // Category chart
   const catChart = document.getElementById('categoryChart');
-  catChart.innerHTML = '';
-  const categories = {};
-  ideas.forEach(i => (categories[i.category] = (categories[i.category] || 0) + 1));
-  Object.entries(categories).forEach(
-    ([cat, count]) =>
-      (catChart.innerHTML += `<div class="flex justify-between"><span>${cat}</span><span>${count}</span></div>`)
-  );
+  if (catChart) {
+    catChart.innerHTML = '';
+    const categories = {};
+    ideas.forEach(i => (categories[i.category] = (categories[i.category] || 0) + 1));
+    Object.entries(categories).forEach(
+      ([cat, count]) =>
+        (catChart.innerHTML += `<div class="flex justify-between"><span>${cat}</span><span>${count}</span></div>`)
+    );
+  }
 
   // Stage chart
   const stageChart = document.getElementById('stageChart');
-  stageChart.innerHTML = '';
-  const stages = {};
-  ideas.forEach(i => (stages[i.stage] = (stages[i.stage] || 0) + 1));
-  Object.entries(stages).forEach(
-    ([st, count]) =>
-      (stageChart.innerHTML += `<div class="flex justify-between"><span>${st}</span><span>${count}</span></div>`)
-  );
+  if (stageChart) {
+    stageChart.innerHTML = '';
+    const stages = {};
+    ideas.forEach(i => (stages[i.stage] = (stages[i.stage] || 0) + 1));
+    Object.entries(stages).forEach(
+      ([st, count]) =>
+        (stageChart.innerHTML += `<div class="flex justify-between"><span>${st}</span><span>${count}</span></div>`)
+    );
+  }
 }
 
-/* ---------- Filters ---------- */
+// Filters
 function applyFilters() {
   const q = document.getElementById('searchInput').value.toLowerCase();
   const cat = document.getElementById('categoryFilter').value;
@@ -1824,9 +2275,11 @@ function applyFilters() {
   displayIdeas(filtered);
 }
 
-/* ---------- Featured ideas carousel ---------- */
+// Featured ideas carousel
 function displayFeaturedIdeas() {
   const container = document.getElementById('featuredIdeas');
+  if (!container) return;
+  
   container.innerHTML = '';
   const topIdeas = [...ideas]
     .sort((a, b) => (b.votes || 0) - (a.votes || 0))
@@ -1847,7 +2300,7 @@ function displayFeaturedIdeas() {
     : '<div class="text-gray-500">No featured ideas yet.</div>';
 }
 
-/* ---------- Navigation ---------- */
+// Navigation
 function showSection(id) {
   document
     .querySelectorAll('main > section')
@@ -1863,11 +2316,11 @@ function showSection(id) {
   if (id === 'profile') updateUserProfile();
 }
 
-/* ---------- Multi-step form buttons ---------- */
+// Multi-step form buttons
 document.getElementById('nextStep').addEventListener('click', nextStep);
 document.getElementById('prevStep').addEventListener('click', prevStep);
 
-/* ---------- Idea submission ---------- */
+// Idea submission
 document.getElementById('ideaForm').addEventListener('submit', e => {
   e.preventDefault();
 
@@ -1915,8 +2368,8 @@ document.getElementById('ideaForm').addEventListener('submit', e => {
   currentStep = 1;
   document
     .querySelectorAll('.form-step')
-    .forEach(s => s.classList.remove('active'));
-  document.querySelector('.form-step[data-step="1"]').classList.add('active');
+    .forEach(s => s.classList.add('hidden'));
+  document.querySelector('.form-step[data-step="1"]').classList.remove('hidden');
   initializeFormSteps();
 
   showNotification('🎉 Your idea has been submitted!', 'success');
@@ -1926,7 +2379,7 @@ document.getElementById('ideaForm').addEventListener('submit', e => {
   showSection('ideas');
 });
 
-/* ---------- Profile save ---------- */
+// Profile save
 document.getElementById('profileForm').addEventListener('submit', e => {
   e.preventDefault();
   currentUser.name = document.getElementById('userFullName').value;
@@ -1948,12 +2401,15 @@ document.getElementById('profileForm').addEventListener('submit', e => {
   updateStats();
 });
 
-/* ---------- Filter listeners ---------- */
-['searchInput', 'categoryFilter', 'stageFilter', 'sortFilter'].forEach(id =>
-  document.getElementById(id).addEventListener('input', applyFilters)
-);
+// Filter listeners
+['searchInput', 'categoryFilter', 'stageFilter', 'sortFilter'].forEach(id => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.addEventListener('input', applyFilters);
+  }
+});
 
-/* ---------- Initialization ---------- */
+// Initialization
 initializeUser();
 initializeMediaHandling();
 initializeFormSteps();
@@ -1965,5 +2421,154 @@ updateLeaderboardPreview();
 updateCompetitionLeaderboard();
 applyFilters();
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var form = document.getElementById('ideaForm');
+  if (!form) return;
+  var steps = Array.from(document.querySelectorAll('.form-step'));
+  var nextBtn = document.getElementById('nextStep');
+  var prevBtn = document.getElementById('prevStep');
+  var submitBtn = document.getElementById('submitIdea');
+  var progressFill = document.getElementById('progressFill');
+  var dots = Array.from(document.querySelectorAll('.step-dot'));
+  var current = 0;
+
+  function showStep(i){
+    steps.forEach(function(s, idx){
+      if (idx === i){ s.classList.remove('hidden'); s.classList.add('active'); }
+      else { s.classList.add('hidden'); s.classList.remove('active'); }
+    });
+    prevBtn.style.display = i === 0 ? 'none' : '';
+    nextBtn.style.display = i === steps.length - 1 ? 'none' : '';
+    submitBtn.style.display = i === steps.length - 1 ? '' : 'none';
+    var pct = ((i+1)/steps.length) * 100;
+    if (progressFill) progressFill.style.width = pct + '%';
+    dots.forEach(function(dot, idx){
+      dot.classList.toggle('active', idx <= i);
+      dot.classList.toggle('inactive', idx > i);
+    });
+  }
+
+  // If there is already code wiring these buttons, we don't overwrite handlers; we add only if not already bound.
+  if (nextBtn && !nextBtn.dataset.bound){
+    nextBtn.addEventListener('click', function(){
+      if (current < steps.length - 1){ current += 1; showStep(current); }
+    });
+    nextBtn.dataset.bound = '1';
+  }
+  if (prevBtn && !prevBtn.dataset.bound){
+    prevBtn.addEventListener('click', function(){
+      if (current > 0){ current -= 1; showStep(current); }
+    });
+    prevBtn.dataset.bound = '1';
+  }
+
+  // Initialize
+  showStep(current);
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if (toggle && menu){
+    toggle.addEventListener('click', function(){
+      menu.classList.toggle('show');
+    });
+  }
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // === Dark Mode Sync ===
+  var darkBtns = [document.getElementById('darkModeToggle'), document.getElementById('darkModeToggleMobile')];
+  function toggleDark(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+  }
+  darkBtns.forEach(function(btn){ if(btn){ btn.onclick = toggleDark; } });
+  if(localStorage.getItem('darkMode') === 'true'){ document.body.classList.add('dark'); }
+
+  // === Navbar Active Highlight ===
+  var links = document.querySelectorAll('.nav-link');
+  function setActive(id){
+    links.forEach(l => l.classList.remove('active'));
+    var active = document.querySelector('.nav-link[data-target="'+id+'"]');
+    if(active) active.classList.add('active');
+  }
+  window.showSection = function(id){
+    document.querySelectorAll('main section').forEach(sec => sec.classList.add('hidden'));
+    var s = document.getElementById(id); if(s) s.classList.remove('hidden');
+    setActive(id);
+    if(window.innerWidth < 768){ document.getElementById('mobileMenu').classList.remove('show'); }
+  };
+
+  // === Hamburger Animation ===
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      menu.classList.toggle('show');
+      toggle.classList.toggle('open');
+    });
+  }
+
+  // === Submission Progress with Checkmarks ===
+  var steps = Array.from(document.querySelectorAll('.form-step'));
+  var dots = Array.from(document.querySelectorAll('.step-dot'));
+  var nextBtn = document.getElementById('nextStep');
+  var prevBtn = document.getElementById('prevStep');
+  var submitBtn = document.getElementById('submitIdea');
+  var progressFill = document.getElementById('progressFill');
+  var current = 0;
+  function showStep(i){
+    steps.forEach((s,idx)=>{ s.classList.toggle('hidden', idx!==i); });
+    prevBtn.style.display = i===0? 'none':'';
+    nextBtn.style.display = i===steps.length-1? 'none':'';
+    submitBtn.style.display = i===steps.length-1? '': 'none';
+    var pct = ((i+1)/steps.length)*100; progressFill.style.width = pct+'%';
+    dots.forEach((dot,idx)=>{
+      dot.classList.remove('active','completed','inactive');
+      if(idx<i) dot.classList.add('completed');
+      else if(idx===i) dot.classList.add('active');
+      else dot.classList.add('inactive');
+    });
+  }
+  if(nextBtn) nextBtn.onclick = ()=>{ if(current<steps.length-1){ current++; showStep(current);} };
+  if(prevBtn) prevBtn.onclick = ()=>{ if(current>0){ current--; showStep(current);} };
+  showStep(current);
+
+  // === Real-time Validation ===
+  var titleInput = document.getElementById('title');
+  var descInput = document.getElementById('description');
+  function validate(input, min){
+    if(!input) return;
+    input.addEventListener('input', function(){
+      if(this.value.length < min){ this.classList.add('border-red-500'); }
+      else { this.classList.remove('border-red-500'); }
+    });
+  }
+  validate(titleInput, 5);
+  validate(descInput, 20);
+
+  // === Save Draft to localStorage ===
+  var form = document.getElementById('ideaForm');
+  if(form){
+    var fields = form.querySelectorAll('input, textarea, select');
+    fields.forEach(f=>{
+      var key = 'draft_'+f.id;
+      if(localStorage.getItem(key)) f.value = localStorage.getItem(key);
+      f.addEventListener('input', ()=>localStorage.setItem(key, f.value));
+    });
+  }
+});
+</script>
+
 </body>
 </html>
+
